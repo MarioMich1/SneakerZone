@@ -43,6 +43,45 @@
       transform: scale(1.05);
     }
   </style>
+
+<style>
+  /* Hide legacy brand controls in gender sections and nav */
+  .kids-brand-btn, .women-brand-btn, .men-brand-btn,
+  .kids-brand-container, .women-brand-container, .men-brand-container,
+  .brand-dropdown, .mega-menu, .submenu, .dropdown, .menu-brands {
+    display: none !important;
+  }
+</style>
+<script>
+(function(){
+  // Remove any dropdown/brand menus under nav items Hombre/Mujer/Niños
+  document.addEventListener('DOMContentLoaded', function(){
+    var nav = document.querySelector('header, nav');
+    if(nav){
+      var toRemove = nav.querySelectorAll('.brand-dropdown, .mega-menu, .submenu, .dropdown, .menu-brands');
+      toRemove.forEach(function(el){ el.parentNode && el.parentNode.removeChild(el); });
+    }
+    // Also remove legacy brand toolbars inside gender pages
+    ['men-catalog','women-catalog','ninos-page'].forEach(function(id){
+      var sec = document.getElementById(id);
+      if(!sec) return;
+      sec.querySelectorAll('.kids-brand-btn, .women-brand-btn, .men-brand-btn').forEach(function(el){
+        var p = el.closest('div'); if(p) p.style.display='none';
+        el.remove();
+      });
+    });
+  });
+})();
+</script>
+
+<!-- Injected CSS: brand pills -->
+<style>
+  .brand-bar{display:flex;flex-wrap:wrap;gap:.75rem;margin:.5rem 0 1.25rem}
+  .brand-pill{padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:9999px;font-size:.95rem;cursor:pointer;background:#eef2f7}
+  .brand-pill.active{background:#000;color:#fff;border-color:#000}
+  .brand-status{font-size:.9rem;color:#6b7280;text-align:right;margin:.25rem 0 .75rem}
+</style>
+
 </head>
 <body class="text-black h-full bg-white">
 
@@ -79,7 +118,7 @@
     <select id="categoria" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
       <option value="hombre">Hombre</option>
       <option value="mujer">Mujer</option>
-      <option value="niños">Niños</option>
+      <option value="ninos">Niños</option>
     </select>
 
     <label class="block mb-2 text-sm font-medium">Marca:</label>
@@ -1597,5 +1636,453 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+
+<!-- Injected fix: unified category values, visible insertion, and robust upload handler -->
+<script>
+(function() {
+  function toggleUploadForm() {
+    var f = document.getElementById('uploadForm');
+    if (f) f.classList.toggle('hidden');
+  }
+
+  function showSection(id) {
+    var sections = document.querySelectorAll('section');
+    sections.forEach(function(s){ s.classList.add('hidden'); });
+    var target = document.getElementById(id);
+    if (target) {
+      target.classList.remove('hidden');
+      try {
+        window.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+      } catch(e) { window.scrollTo(0, target.offsetTop || 0); }
+    }
+  }
+
+  // Override subirTenis globally
+  window.subirTenis = function() {
+    var nombreEl = document.getElementById('nombreTenis');
+    var precioEl = document.getElementById('precioTenis');
+    var catEl    = document.getElementById('categoria');
+    var marcaEl  = document.getElementById('marca');
+    var tallasEl = document.getElementById('tallasTenis');
+    var fotoEl   = document.getElementById('fotoTenis');
+
+    var nombre = nombreEl ? (nombreEl.value || '').trim() : '';
+    var precio = precioEl ? (precioEl.value || '').trim() : '';
+    var categoria = catEl ? (catEl.value || '').trim() : '';
+    var marca = marcaEl ? (marcaEl.value || '').trim() : '';
+    var tallas = tallasEl ? (tallasEl.value || '') : '';
+    tallas = tallas.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+
+    var foto = (fotoEl && fotoEl.files && fotoEl.files[0]) ? fotoEl.files[0] : null;
+
+    if (!nombre || !precio || !tallas.length || !foto) {
+      alert('Por favor completa todos los campos y selecciona una imagen.');
+      return;
+    }
+
+    // Normaliza niños -> ninos
+    if (categoria && categoria.toLowerCase() === 'niños') categoria = 'ninos';
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var imageUrl = e.target.result;
+
+      var card = document.createElement('div');
+      card.className = 'product-card nike-hover group cursor-pointer';
+      if (marca) card.setAttribute('data-brand', (marca || '').toLowerCase());
+      card.innerHTML = ''
+        + '<div class="relative overflow-hidden bg-gray-100 rounded-lg mb-4">'
+        + '  <div class="product-image aspect-square flex items-center justify-center p-4">'
+        + '    <img src="' + imageUrl + '" alt="' + nombre.replace(/"/g,'&quot;') + '" class="w-full h-full object-cover rounded-lg" onerror="this.style.display=\'none\'">'
+        + '  </div>'
+        + '</div>'
+        + '<div class="space-y-2">'
+        + '  <h3 class="font-medium text-black">' + nombre + '</h3>'
+        + '  <p class="text-gray-500 text-sm">' + (marca || '') + ' - Tenis para ' + (categoria ? (categoria.charAt(0).toUpperCase() + categoria.slice(1)) : '') + '</p>'
+        + '  <p class="font-medium text-black">$' + precio + '</p>'
+        + '  <div class="size-selector mt-4">'
+        + '    <p class="text-sm text-gray-600 mb-2">Talla:</p>'
+        + '    <div class="grid grid-cols-4 gap-2 mb-4">'
+        +          tallas.map(function(t){ return '<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="'+t+'">'+t+'</button>'; }).join('')
+        + '    </div>'
+        + '  </div>'
+        + '  <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 hover:bg-green-700" disabled>'
+        + '    Comprar por WhatsApp'
+        + '  </button>'
+        + '</div>';
+
+      var idMap = {
+        'hombre': 'men-catalog',
+        'mujer': 'women-catalog',
+        'ninos': 'ninos-page',
+        'niños': 'ninos-page'
+      };
+
+      var destinoId = idMap[categoria] || null;
+      var contenedor = null;
+      if (destinoId) {
+        var destino = document.getElementById(destinoId);
+        if (destino) contenedor = destino.querySelector('.grid');
+      }
+
+      if (contenedor) {
+        contenedor.appendChild(card);
+        showSection(destinoId);
+        alert('Tenis "' + nombre + '" cargado en ' + categoria + ' (' + (marca || '') + ') con precio $' + precio + ' y tallas: ' + tallas.join(', '));
+      } else {
+        // Fallback: insertar en inicio si existe
+        var homeGrid = document.querySelector('#productos .grid');
+        if (homeGrid) {
+          homeGrid.prepend(card);
+          showSection('productos');
+          alert('Sección de destino no encontrada. Se agregó en inicio.');
+        } else {
+          alert('No se encontró ninguna sección para insertar el producto.');
+        }
+      }
+
+      // Oculta el formulario después de subir
+      toggleUploadForm();
+      // Limpia el formulario para siguiente carga
+      if (nombreEl) nombreEl.value = '';
+      if (precioEl) precioEl.value = '';
+      if (tallasEl) tallasEl.value = '';
+      if (fotoEl) fotoEl.value = '';
+    };
+
+    reader.readAsDataURL(foto);
+  };
+})();
+</script>
+
+
+<!-- Injected: Gender pages brand filters + brand normalization + nav wiring -->
+<style>
+  /* Hide any existing brand lists inside gender pages to avoid duplication */
+  #men-catalog .brand-list, #women-catalog .brand-list, #ninos-page .brand-list,
+  #men-catalog .brand-grid, #women-catalog .brand-grid, #ninos-page .brand-grid,
+  #men-catalog .brands, #women-catalog .brands, #ninos-page .brands {
+    display: none !important;
+  }
+  .brand-bar{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0 1rem 0}
+  .brand-pill{padding:.5rem .9rem;border:1px solid #e5e7eb;border-radius:9999px;font-size:.9rem;cursor:pointer}
+  .brand-pill.active{border-color:#000}
+  .brand-status{font-size:.9rem;color:#6b7280;text-align:right;margin-bottom:.5rem}
+</style>
+<script>
+(function(){
+  // Normalize brand names (fix common misspellings)
+  function normalizeBrandName(name){
+    if(!name) return '';
+    var n = (name||'').toString().trim().toLowerCase();
+    var map = {
+      'guci':'gucci','guccy':'gucci','gucci':'gucci',
+      'guess':'guess',
+      'tommi hilfier':'tommy hilfiger','tommi hilfiger':'tommy hilfiger','tommy hilfier':'tommy hilfiger','tommyhilfiger':'tommy hilfiger','tommmy hilfiger':'tommy hilfiger',
+      'lacoste':'lacoste',
+      'converse':'converse',
+      'van':'vans','vans':'vans','vanz':'vans',
+      'nike':'nike',
+      'adidas':'adidas',
+      'newbalance':'new balance','new balance':'new balance'
+    };
+    return (map[n] || n).replace(/\s+/g,' ').trim();
+  }
+
+  // Ensure brand bar inside a given section (men-catalog, women-catalog, ninos-page)
+  var BRANDS = ['Todos','Nike','Adidas','New Balance','Guess','Gucci','Tommy Hilfiger','Lacoste','Converse','Vans'];
+
+  function ensureBrandBar(sectionId){
+    var section = document.getElementById(sectionId);
+    if(!section) return;
+    // If already exists, do nothing
+    if(section.querySelector('.brand-bar')) return;
+
+    // Status
+    var status = document.createElement('div');
+    status.className = 'brand-status';
+    status.innerHTML = 'Filtro activo: <strong>Todos</strong>';
+
+    // Pills
+    var bar = document.createElement('div');
+    bar.className = 'brand-bar';
+    BRANDS.forEach(function(lbl, idx){
+      var pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'brand-pill' + (idx===0?' active':'');
+      pill.setAttribute('data-brand-filter', lbl.toLowerCase());
+      pill.textContent = lbl;
+      bar.appendChild(pill);
+    });
+
+    // Insert near top of section (before grid)
+    var grid = section.querySelector('.grid');
+    section.insertBefore(status, grid || section.firstChild);
+    section.insertBefore(bar, grid || section.firstChild);
+
+    // Filtering behavior (only within this section)
+    bar.addEventListener('click', function(e){
+      if(!(e.target && e.target.matches('.brand-pill'))) return;
+      var target = (e.target.getAttribute('data-brand-filter') || '').toLowerCase();
+      bar.querySelectorAll('.brand-pill').forEach(function(p){ p.classList.remove('active'); });
+      e.target.classList.add('active');
+      status.innerHTML = 'Filtro activo: <strong>' + (e.target.textContent || 'Todos') + '</strong>';
+
+      var cards = section.querySelectorAll('.grid .product-card');
+      cards.forEach(function(card){
+        var b = (card.getAttribute('data-brand') || '').toLowerCase().trim();
+        if(target === 'todos' || !target){
+          card.style.display = '';
+        }else{
+          card.style.display = (b === target) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  // Hook nav menu (Hombre/Mujer/Niños) to open their pages and show brand bar
+  function hookNav(){
+    var anchors = Array.from(document.querySelectorAll('a, button'));
+    anchors.forEach(function(a){
+      var txt = (a.textContent || '').trim().toLowerCase();
+      if(txt === 'hombre'){
+        a.addEventListener('click', function(ev){ try{ev.preventDefault();}catch(_){}
+          if(window.showSection) window.showSection('men-catalog');
+          ensureBrandBar('men-catalog');
+        });
+      }
+      if(txt === 'mujer'){
+        a.addEventListener('click', function(ev){ try{ev.preventDefault();}catch(_){}
+          if(window.showSection) window.showSection('women-catalog');
+          ensureBrandBar('women-catalog');
+        });
+      }
+      if(txt === 'niños' || txt === 'ninos'){
+        a.addEventListener('click', function(ev){ try{ev.preventDefault();}catch(_){}
+          if(window.showSection) window.showSection('ninos-page');
+          ensureBrandBar('ninos-page');
+        });
+      }
+    });
+  }
+
+  // Enhance existing subirTenis to normalize brand and keep data-brand consistent
+  var prevSubir = window.subirTenis;
+  window.subirTenis = function(){
+    if (typeof prevSubir === 'function') {
+      // Observe and normalize the next added product-card
+      var obs = new MutationObserver(function(muts){
+        muts.forEach(function(m){
+          m.addedNodes && m.addedNodes.forEach(function(node){
+            if(node && node.classList && node.classList.contains('product-card')){
+              var b = node.getAttribute('data-brand') || '';
+              var norm = normalizeBrandName(b);
+              if(norm) node.setAttribute('data-brand', norm.toLowerCase());
+            }
+          });
+        });
+      });
+      obs.observe(document.body, {childList:true, subtree:true});
+      prevSubir();
+      ensureBrandBar('men-catalog'); ensureBrandBar('women-catalog'); ensureBrandBar('ninos-page');
+      setTimeout(function(){ try{obs.disconnect();}catch(_){} }, 1200);
+      return;
+    }
+  };
+
+  // On DOM ready, ensure bars in gender pages
+  document.addEventListener('DOMContentLoaded', function(){
+    ensureBrandBar('men-catalog');
+    ensureBrandBar('women-catalog');
+    ensureBrandBar('ninos-page');
+    hookNav();
+  });
+})();
+</script>
+
+<!-- Injected: robust hash router + brand filtering -->
+<script>
+(function(){
+  // --- Simple Router (hash-based) ---
+  function hideAllSections(){
+    document.querySelectorAll('section').forEach(function(s){ s.classList.add('hidden'); });
+  }
+  function show(id){
+    var el = document.getElementById(id);
+    if(el){
+      el.classList.remove('hidden');
+      try{ el.scrollIntoView({behavior:'smooth', block:'start'}); }catch(_){}
+    }
+  }
+  function routeTo(id){
+    try{ensureBrandBar(id);}catch(_){}
+
+    hideAllSections();
+    show(id);
+  }
+  function routeFromHash(){
+    var h = (location.hash || '').replace(/^#/, '');
+    if(h === 'men' || h === 'men-catalog') return routeTo('men-catalog');
+    if(h === 'women' || h === 'women-catalog') return routeTo('women-catalog');
+    if(h === 'kids' || h === 'ninos' || h === 'niños' || h === 'ninos-page') return routeTo('ninos-page');
+    // default: show home/products
+    var home = document.getElementById('productos') || document.getElementById('hero') || document.querySelector('section');
+    if(home){ home.classList.remove('hidden'); }
+  }
+  window.addEventListener('hashchange', routeFromHash);
+  document.addEventListener('DOMContentLoaded', routeFromHash);
+
+  // Wire explicit links for Hombre/Mujer/Niños to hashes
+  document.addEventListener('DOMContentLoaded', function(){
+    Array.from(document.querySelectorAll('a,button')).forEach(function(a){
+      var t = (a.textContent || '').trim().toLowerCase();
+      if(t === 'hombre'){ a.setAttribute('href', '#men-catalog'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash = 'men-catalog'; try{ensureBrandBar('men-catalog');}catch(_){}; }); }
+      if(t === 'mujer'){ a.setAttribute('href', '#women-catalog'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash = 'women-catalog'; try{ensureBrandBar('women-catalog');}catch(_){}; }); }
+      if(t === 'niños' || t === 'ninos'){ a.setAttribute('href', '#ninos-page'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash = 'ninos-page'; try{ensureBrandBar('ninos-page');}catch(_){}; }); }
+    });
+  });
+
+  // --- Brand Bar (ensure + filtering) ---
+  var BRANDS = ['Todos','Nike','Adidas','New Balance','Guess','Gucci','Tommy Hilfiger','Lacoste','Converse','Vans'];
+  var ALIASES = {
+    'new balance': ['newbalance','new-balance','nb'],
+    'tommy hilfiger': ['tommyhilfiger','tommi hilfier','tommi hilfiger','tommy hilfier','tommmy hilfiger'],
+    'gucci': ['guci','guccy'],
+    'vans': ['van','vanz']
+  };
+  function normalizeBrand(s){
+    if(!s) return '';
+    s = s.toLowerCase().trim();
+    for (var key in ALIASES){
+      var arr = ALIASES[key];
+      if(s === key) return key;
+      for (var i=0;i<arr.length;i++){ if(s === arr[i]) return key; }
+    }
+    return s.replace(/\s+/g,' ').trim();
+  }
+  function ensureBrandBar(sectionId){
+    var section = document.getElementById(sectionId);
+    if(!section) return;
+    if(section.querySelector('.brand-bar')) return;
+
+    var status = document.createElement('div');
+    status.className = 'brand-status';
+    status.innerHTML = 'Filtro activo: <strong>Todos</strong>';
+
+    var bar = document.createElement('div');
+    bar.className = 'brand-bar';
+    BRANDS.forEach(function(lbl, idx){
+      var pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'brand-pill' + (idx===0?' active':'');
+      pill.setAttribute('data-brand-filter', lbl.toLowerCase());
+      pill.textContent = lbl;
+      bar.appendChild(pill);
+    });
+
+    var grid = section.querySelector('.grid');
+    section.insertBefore(status, grid || section.firstChild);
+    section.insertBefore(bar, grid || section.firstChild);
+
+    bar.addEventListener('click', function(e){
+      if(!(e.target && e.target.matches('.brand-pill'))) return;
+      var target = (e.target.getAttribute('data-brand-filter') || '').toLowerCase();
+      bar.querySelectorAll('.brand-pill').forEach(function(p){ p.classList.remove('active'); });
+      e.target.classList.add('active');
+      status.innerHTML = 'Filtro activo: <strong>' + (e.target.textContent || 'Todos') + '</strong>';
+
+      var cards = section.querySelectorAll('.grid .product-card');
+      cards.forEach(function(card){
+        var b = normalizeBrand(card.getAttribute('data-brand') || '');
+        if(target === 'todos' || !target){ card.style.display = ''; return; }
+        card.style.display = (b === target) ? '' : 'none';
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    ['men-catalog','women-catalog','ninos-page'].forEach(ensureBrandBar);
+  });
+})();
+</script>
+
+<!-- Injected: top-of-section brand bars for all target pages -->
+<script>
+(function(){
+  var BRANDS = ['Nike','Adidas','New Balance','Guess','Gucci','Tommy Hilfiger','Lacoste','Converse','Vans'];
+  function makeBar(){
+    var wrap = document.createElement('div');
+    wrap.className = 'brand-bar';
+    BRANDS.forEach(function(lbl, idx){
+      var pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'brand-pill' + (idx===0?' active':'');
+      pill.setAttribute('data-brand-filter', lbl.toLowerCase());
+      pill.textContent = lbl;
+      wrap.appendChild(pill);
+    });
+    return wrap;
+  }
+  function normalize(s){
+    s = (s||'').toLowerCase().trim();
+    var map = {'newbalance':'new balance','tommyhilfiger':'tommy hilfiger','tommi hilfier':'tommy hilfiger','guci':'gucci','van':'vans','vanz':'vans'};
+    return (map[s]||s);
+  }
+  function attachFiltering(section){
+    var bar = section.querySelector('.brand-bar');
+    if(!bar) return;
+    bar.addEventListener('click', function(e){
+      if(!(e.target && e.target.matches('.brand-pill'))) return;
+      bar.querySelectorAll('.brand-pill').forEach(function(p){ p.classList.remove('active'); });
+      e.target.classList.add('active');
+      var target = (e.target.getAttribute('data-brand-filter')||'').toLowerCase();
+      var cards = section.querySelectorAll('.grid .product-card');
+      cards.forEach(function(card){
+        var b = normalize(card.getAttribute('data-brand')||'');
+        card.style.display = (!target || normalize(target)===normalize('nike') && e.target.textContent==='Nike') ? card.style.display : card.style.display;
+        if(!target){ card.style.display=''; }
+        else { card.style.display = (b===normalize(target)) ? '' : 'none'; }
+      });
+    });
+  }
+  window.ensureBrandBarTop = function(sectionId){
+    var section = document.getElementById(sectionId);
+    if(!section) return;
+    if(section.querySelector(':scope > .brand-bar')) { attachFiltering(section); return; }
+    // Insert as the FIRST element inside the section (top position under header)
+    var bar = makeBar();
+    if(section.firstElementChild){
+      section.insertBefore(bar, section.firstElementChild.nextSibling || section.firstElementChild);
+    } else {
+      section.appendChild(bar);
+    }
+    attachFiltering(section);
+  };
+
+  // Hook router to ensure bars for all target pages
+  document.addEventListener('DOMContentLoaded', function(){
+    ['men-catalog','women-catalog','ninos-page','nuevos-lanzamientos-page','ofertas-page'].forEach(function(id){
+      try{ ensureBrandBarTop(id); }catch(_){}
+    });
+    // Also wire nav clicks again for hash routing
+    Array.from(document.querySelectorAll('a,button')).forEach(function(a){
+      var t = (a.textContent||'').trim().toLowerCase();
+      if(t==='hombre'){ a.setAttribute('href','#men-catalog'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash='men-catalog'; ensureBrandBarTop('men-catalog');}); }
+      if(t==='mujer'){ a.setAttribute('href','#women-catalog'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash='women-catalog'; ensureBrandBarTop('women-catalog');}); }
+      if(t==='niños' || t==='ninos'){ a.setAttribute('href','#ninos-page'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash='ninos-page'; ensureBrandBarTop('ninos-page');}); }
+      if(t==='nuevos lanzamientos'){ a.setAttribute('href','#nuevos-lanzamientos-page'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash='nuevos-lanzamientos-page'; ensureBrandBarTop('nuevos-lanzamientos-page');}); }
+      if(t==='ofertas'){ a.setAttribute('href','#ofertas-page'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash='ofertas-page'; ensureBrandBarTop('ofertas-page');}); }
+    });
+  });
+
+  // When hash changes, ensure the bar exists and is visible
+  window.addEventListener('hashchange', function(){
+    var h = (location.hash||'').replace(/^#/,'');
+    if(h==='men-catalog'||h==='women-catalog'||h==='ninos-page'||h==='nuevos-lanzamientos-page'||h==='ofertas-page'){
+      try{ ensureBrandBarTop(h); }catch(_){}
+    }
+  });
+})();
+</script>
 </body>
 </html>

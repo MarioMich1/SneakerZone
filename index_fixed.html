@@ -79,7 +79,7 @@
     <select id="categoria" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
       <option value="hombre">Hombre</option>
       <option value="mujer">Mujer</option>
-      <option value="niños">Niños</option>
+      <option value="ninos">Niños</option>
     </select>
 
     <label class="block mb-2 text-sm font-medium">Marca:</label>
@@ -1595,6 +1595,125 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.submenu').forEach(m => m.classList.add('hidden'));
   });
 });
+</script>
+
+
+<!-- Injected fix: unified category values, visible insertion, and robust upload handler -->
+<script>
+(function() {
+  function toggleUploadForm() {
+    var f = document.getElementById('uploadForm');
+    if (f) f.classList.toggle('hidden');
+  }
+
+  function showSection(id) {
+    var sections = document.querySelectorAll('section');
+    sections.forEach(function(s){ s.classList.add('hidden'); });
+    var target = document.getElementById(id);
+    if (target) {
+      target.classList.remove('hidden');
+      try {
+        window.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+      } catch(e) { window.scrollTo(0, target.offsetTop || 0); }
+    }
+  }
+
+  // Override subirTenis globally
+  window.subirTenis = function() {
+    var nombreEl = document.getElementById('nombreTenis');
+    var precioEl = document.getElementById('precioTenis');
+    var catEl    = document.getElementById('categoria');
+    var marcaEl  = document.getElementById('marca');
+    var tallasEl = document.getElementById('tallasTenis');
+    var fotoEl   = document.getElementById('fotoTenis');
+
+    var nombre = nombreEl ? (nombreEl.value || '').trim() : '';
+    var precio = precioEl ? (precioEl.value || '').trim() : '';
+    var categoria = catEl ? (catEl.value || '').trim() : '';
+    var marca = marcaEl ? (marcaEl.value || '').trim() : '';
+    var tallas = tallasEl ? (tallasEl.value || '') : '';
+    tallas = tallas.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+
+    var foto = (fotoEl && fotoEl.files && fotoEl.files[0]) ? fotoEl.files[0] : null;
+
+    if (!nombre || !precio || !tallas.length || !foto) {
+      alert('Por favor completa todos los campos y selecciona una imagen.');
+      return;
+    }
+
+    // Normaliza niños -> ninos
+    if (categoria && categoria.toLowerCase() === 'niños') categoria = 'ninos';
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var imageUrl = e.target.result;
+
+      var card = document.createElement('div');
+      card.className = 'product-card nike-hover group cursor-pointer';
+      if (marca) card.setAttribute('data-brand', (marca || '').toLowerCase());
+      card.innerHTML = ''
+        + '<div class="relative overflow-hidden bg-gray-100 rounded-lg mb-4">'
+        + '  <div class="product-image aspect-square flex items-center justify-center p-4">'
+        + '    <img src="' + imageUrl + '" alt="' + nombre.replace(/"/g,'&quot;') + '" class="w-full h-full object-cover rounded-lg" onerror="this.style.display=\'none\'">'
+        + '  </div>'
+        + '</div>'
+        + '<div class="space-y-2">'
+        + '  <h3 class="font-medium text-black">' + nombre + '</h3>'
+        + '  <p class="text-gray-500 text-sm">' + (marca || '') + ' - Tenis para ' + (categoria ? (categoria.charAt(0).toUpperCase() + categoria.slice(1)) : '') + '</p>'
+        + '  <p class="font-medium text-black">$' + precio + '</p>'
+        + '  <div class="size-selector mt-4">'
+        + '    <p class="text-sm text-gray-600 mb-2">Talla:</p>'
+        + '    <div class="grid grid-cols-4 gap-2 mb-4">'
+        +          tallas.map(function(t){ return '<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="'+t+'">'+t+'</button>'; }).join('')
+        + '    </div>'
+        + '  </div>'
+        + '  <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 hover:bg-green-700" disabled>'
+        + '    Comprar por WhatsApp'
+        + '  </button>'
+        + '</div>';
+
+      var idMap = {
+        'hombre': 'men-catalog',
+        'mujer': 'women-catalog',
+        'ninos': 'ninos-page',
+        'niños': 'ninos-page'
+      };
+
+      var destinoId = idMap[categoria] || null;
+      var contenedor = null;
+      if (destinoId) {
+        var destino = document.getElementById(destinoId);
+        if (destino) contenedor = destino.querySelector('.grid');
+      }
+
+      if (contenedor) {
+        contenedor.appendChild(card);
+        showSection(destinoId);
+        alert('Tenis "' + nombre + '" cargado en ' + categoria + ' (' + (marca || '') + ') con precio $' + precio + ' y tallas: ' + tallas.join(', '));
+      } else {
+        // Fallback: insertar en inicio si existe
+        var homeGrid = document.querySelector('#productos .grid');
+        if (homeGrid) {
+          homeGrid.prepend(card);
+          showSection('productos');
+          alert('Sección de destino no encontrada. Se agregó en inicio.');
+        } else {
+          alert('No se encontró ninguna sección para insertar el producto.');
+        }
+      }
+
+      // Oculta el formulario después de subir
+      toggleUploadForm();
+      // Limpia el formulario para siguiente carga
+      if (nombreEl) nombreEl.value = '';
+      if (precioEl) precioEl.value = '';
+      if (tallasEl) tallasEl.value = '';
+      if (fotoEl) fotoEl.value = '';
+    };
+
+    reader.readAsDataURL(foto);
+  };
+})();
 </script>
 
 </body>

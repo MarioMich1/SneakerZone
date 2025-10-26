@@ -43,6 +43,122 @@
       transform: scale(1.05);
     }
   </style>
+
+<style>
+  /* Hide legacy brand controls in gender sections and nav */
+  .kids-brand-btn, .women-brand-btn, .men-brand-btn,
+  .kids-brand-container, .women-brand-container, .men-brand-container,
+  .brand-dropdown, .mega-menu, .submenu, .dropdown, .menu-brands {
+    display: none !important;
+  }
+</style>
+<script>
+(function(){
+  // Remove any dropdown/brand menus under nav items Hombre/Mujer/Niños
+  document.addEventListener('DOMContentLoaded', function(){
+    var nav = document.querySelector('header, nav');
+    if(nav){
+      var toRemove = nav.querySelectorAll('.brand-dropdown, .mega-menu, .submenu, .dropdown, .menu-brands');
+      toRemove.forEach(function(el){ el.parentNode && el.parentNode.removeChild(el); });
+    }
+    // Also remove legacy brand toolbars inside gender pages
+    ['men-catalog','women-catalog','ninos-page'].forEach(function(id){
+      var sec = document.getElementById(id);
+      if(!sec) return;
+      sec.querySelectorAll('.kids-brand-btn, .women-brand-btn, .men-brand-btn').forEach(function(el){
+        var p = el.closest('div'); if(p) p.style.display='none';
+        el.remove();
+      });
+    });
+  });
+})();
+</script>
+
+<!-- Injected CSS: brand pills -->
+<style>
+  .brand-bar{display:flex;flex-wrap:wrap;gap:.75rem;margin:.5rem 0 1.25rem}
+  .brand-pill{padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:9999px;font-size:.95rem;cursor:pointer;background:#eef2f7}
+  .brand-pill.active{background:#000;color:#fff;border-color:#000}
+  .brand-status{font-size:.9rem;color:#6b7280;text-align:right;margin:.25rem 0 .75rem}
+</style>
+
+
+<!-- Injected CSS: top bars + filter panel -->
+<style>
+  .section-toolbar{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin:1rem 0}
+  .brand-bar{display:flex;flex-wrap:wrap;gap:.6rem}
+  .brand-pill{padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:9999px;font-size:.95rem;cursor:pointer;background:#eef2f7}
+  .brand-pill.active{background:#000;color:#fff;border-color:#000}
+  .filter-btn{padding:.5rem 1rem;border:1px solid #000;border-radius:9999px;background:#fff;cursor:pointer}
+  .filters-panel{display:none;border:1px solid #e5e7eb;border-radius:12px;padding:1rem;margin:.5rem 0 1rem;background:#fafafa}
+  .filters-panel.show{display:block}
+  .filters-group{display:flex;gap:1rem;flex-wrap:wrap}
+  .filters-group > div{min-width:200px}
+  .filters-apply{margin-top: .5rem; padding:.6rem 1rem;border-radius:10px;border:1px solid #000;background:#000;color:#fff;cursor:pointer}
+  .no-results{padding:1rem;color:#6b7280}
+</style>
+
+
+<style>
+  /* Remove legacy brand bars that are not first toolbars */
+  .grid .brand-bar,
+  .products .brand-bar {
+    display: none !important;
+  }
+</style>
+
+
+<!-- Injected CSS: cart drawer + buttons -->
+<style>
+  .add-to-cart{margin-top:.5rem;border:1px solid #111;padding:.6rem 1rem;border-radius:10px}
+  .add-to-cart:hover{background:#111;color:#fff}
+  .size-btn.active{border-color:#000;background:#111;color:#fff}
+  /* Remove any heart/favorite buttons visually */
+  .favorite-btn, .wishlist-btn, .heart-btn {display:none !important;}
+  /* Cart drawer */
+  #cart-drawer{position:fixed;top:0;right:-420px;width:360px;height:100vh;background:#fff;border-left:1px solid #e5e7eb;box-shadow:-2px 0 10px rgba(0,0,0,.08);transition:right .25s ease;z-index:9999;display:flex;flex-direction:column}
+  #cart-drawer.open{right:0}
+  #cart-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1rem;border-bottom:1px solid #e5e7eb}
+  #cart-items{flex:1;overflow:auto;padding:0 .75rem}
+  .cart-item{display:flex;gap:.6rem;align-items:center;border-bottom:1px dashed #e5e7eb;padding:.6rem 0}
+  .cart-item img{width:64px;height:64px;object-fit:cover;border-radius:8px}
+  .cart-remove{margin-left:auto;border:1px solid #ef4444;color:#ef4444;background:#fff;border-radius:8px;padding:.3rem .6rem}
+  .cart-remove:hover{background:#ef4444;color:#fff}
+  #cart-footer{border-top:1px solid #e5e7eb;padding:1rem}
+  .cart-empty{color:#6b7280;padding:1rem}
+  .cart-badge{position:absolute;top:-6px;right:-8px;background:#2563eb;color:#fff;border-radius:9999px;font-size:.7rem;padding:0 .35rem;min-width:18px;text-align:center}
+</style>
+
+
+<!-- Injected CSS: edit/delete buttons + modal + ensure heart hidden -->
+<style>
+  .product-actions{display:flex;gap:.5rem;margin-top:.5rem}
+  .btn-edit,.btn-delete{border:1px solid #111;padding:.45rem .7rem;border-radius:8px;font-size:.85rem;cursor:pointer;background:#fff}
+  .btn-delete{border-color:#ef4444;color:#ef4444}
+  .btn-delete:hover{background:#ef4444;color:#fff}
+  .btn-edit:hover{background:#111;color:#fff}
+  /* Hide any existing heart/favorite UI */
+  .favorite-btn, .wishlist-btn, .heart-btn, [aria-label="Favoritos"], [title="Favoritos"] { display:none !important; }
+  /* Modal */
+  #edit-modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:10000}
+  #edit-modal.open{display:flex}
+  #edit-box{background:#fff;border-radius:12px;min-width:320px;max-width:520px;padding:1rem;border:1px solid #e5e7eb}
+  #edit-box h3{font-weight:700;margin-bottom:.5rem}
+  #edit-box label{display:block;font-size:.9rem;margin-top:.5rem}
+  #edit-box input{width:100%;border:1px solid #e5e7eb;border-radius:8px;padding:.45rem;margin-top:.25rem}
+  #edit-actions{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem}
+  .btn{border:1px solid #111;border-radius:8px;padding:.5rem .9rem;background:#fff;cursor:pointer}
+  .btn.primary{background:#111;color:#fff}
+</style>
+
+
+<style>
+  /* Force-hide any heart/wishlist icons in header and cards */
+  header [class*="heart"], header [title*="Favorit"], header [aria-label*="Favorit"],
+  header a[href*="wish"], header button[href*="wish"],
+  .heart, .icon-heart, .wishlist, .wishlist-btn, .favorite, .favorite-btn { display: none !important; }
+</style>
+
 </head>
 <body class="text-black h-full bg-white">
 
@@ -56,6 +172,180 @@
             <span class="text-black">SNEAKER</span><span class="text-blue-600">ZONE</span>
           </div>
         </div>
+        
+
+
+<!-- Botón para abrir el formulario -->
+<div class="text-center my-12">
+  </button>
+</div>
+
+<!-- Formulario emergente -->
+<div id="uploadForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+  <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+    <h2 class="text-xl font-bold mb-4 text-center">Agregar Nuevo Tenis</h2>
+
+    <label class="block mb-2 text-sm font-medium">Nombre del producto:</label>
+    <input type="text" id="nombreTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. Air Max Revolution">
+
+    <label class="block mb-2 text-sm font-medium">Precio:</label>
+    <input type="number" id="precioTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 750">
+
+    <label class="block mb-2 text-sm font-medium">Categoría:</label>
+    <select id="categoria" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
+      <option value="hombre">Hombre</option>
+      <option value="mujer">Mujer</option>
+      <option value="ninos">Niños</option>
+    </select>
+
+    <label class="block mb-2 text-sm font-medium">Marca:</label>
+    <select id="marca" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
+      <option value="nike">Nike</option>
+      <option value="adidas">Adidas</option>
+      <option value="puma">Puma</option>
+      <option value="reebok">Reebok</option>
+      <option value="newbalance">New Balance</option>
+      <option value="alo">Alo</option>
+      <option value="gucicloudtec">GuciCloudtec</option>
+    </select>
+
+    <label class="block mb-2 text-sm font-medium">Tallas disponibles (separadas por coma):</label>
+    <input type="text" id="tallasTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 7,8,9,10,11">
+
+    <label class="block mb-2 text-sm font-medium">Foto del producto:</label>
+    <input type="file" id="fotoTenis" accept="image/*" class="w-full mb-4">
+
+    <button onclick="subirTenis()" class="nike-button bg-green-600 text-white w-full py-2 hover:bg-green-700 transition">
+      Subir Tenis
+    </button>
+    <button onclick="toggleUploadForm()" class="mt-3 text-sm text-gray-500 hover:underline block text-center">
+      Cancelar
+    </button>
+  </div>
+</div>
+
+    <!-- Prueba de cargado de tenis-->
+<!-- Botón para abrir el formulario -->
+<div class="text-center my-12">
+  <button onclick="toggleUploadForm()" class="nike-button bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition">
+    Cargar Tenis
+  </button>
+</div>
+
+<!-- Formulario emergente -->
+<div id="uploadForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+  <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+    <h2 class="text-xl font-bold mb-4 text-center">Agregar Nuevo Tenis</h2>
+
+    <label class="block mb-2 text-sm font-medium">Nombre del producto:</label>
+    <input type="text" id="nombreTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. Air Max Revolution">
+
+    <label class="block mb-2 text-sm font-medium">Precio:</label>
+    <input type="number" id="precioTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 750">
+
+    <label class="block mb-2 text-sm font-medium">Categoría:</label>
+    <select id="categoria" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
+      <option value="hombre">Hombre</option>
+      <option value="mujer">Mujer</option>
+      <option value="ninos">Niños</option>
+    </select>
+
+    <label class="block mb-2 text-sm font-medium">Marca:</label>
+    <select id="marca" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
+      <option value="nike">Nike</option>
+      <option value="adidas">Adidas</option>
+      <option value="puma">Puma</option>
+      <option value="reebok">Reebok</option>
+      <option value="newbalance">New Balance</option>
+      <option value="alo">Alo</option>
+      <option value="gucicloudtec">GuciCloudtec</option>
+    </select>
+
+    <label class="block mb-2 text-sm font-medium">Tallas disponibles (separadas por coma):</label>
+    <input type="text" id="tallasTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 7,8,9,10,11">
+
+    <label class="block mb-2 text-sm font-medium">Foto del producto:</label>
+    <input type="file" id="fotoTenis" accept="image/*" class="w-full mb-4">
+
+    <button onclick="subirTenis()" class="nike-button bg-green-600 text-white w-full py-2 hover:bg-green-700 transition">
+      Subir Tenis
+    </button>
+    <button onclick="toggleUploadForm()" class="mt-3 text-sm text-gray-500 hover:underline block text-center">
+      Cancelar
+    </button>
+  </div>
+</div>
+
+<!-- Script para insertar el producto en la sección correspondiente -->
+<script>
+function toggleUploadForm() {
+  document.getElementById('uploadForm').classList.toggle('hidden');
+}
+
+function subirTenis() {
+  const nombre = document.getElementById('nombreTenis').value;
+  const precio = document.getElementById('precioTenis').value;
+  const categoria = document.getElementById('categoria').value;
+  const marca = document.getElementById('marca').value;
+  const tallas = document.getElementById('tallasTenis').value.split(',');
+  const foto = document.getElementById('fotoTenis').files[0];
+
+  if (!nombre || !precio || !tallas || !foto) {
+    alert('Por favor completa todos los campos y selecciona una imagen.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const imageUrl = e.target.result;
+
+    const card = document.createElement('div');
+    card.className = `product-card nike-hover group cursor-pointer`;
+    card.setAttribute('data-brand', marca.toLowerCase());
+
+    card.innerHTML = `
+      <div class="relative overflow-hidden bg-gray-100 rounded-lg mb-4">
+        <div class="product-image aspect-square flex items-center justify-center p-4">
+          <img src="${imageUrl}" alt="${nombre}" class="w-full h-full object-cover rounded-lg">
+        </div>
+      </div>
+      <div class="space-y-2">
+        <h3 class="font-medium text-black">${nombre}</h3>
+        <p class="text-gray-500 text-sm">${marca} - Tenis para ${categoria.charAt(0).toUpperCase() + categoria.slice(1)}</p>
+        <p class="font-medium text-black">$${precio}</p>
+        <div class="size-selector mt-4">
+          <p class="text-sm text-gray-600 mb-2">Talla:</p>
+          <div class="grid grid-cols-4 gap-2 mb-4">
+            ${tallas.map(t => `<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="${t.trim()}">${t.trim()}</button>`).join('')}
+          </div>
+        </div>
+        <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 hover:bg-green-700" disabled>
+          Comprar por WhatsApp
+        </button>
+      </div>
+    `;
+
+    const idMap = {
+      hombre: 'men-catalog',
+      mujer: 'women-catalog',
+      ninos: 'ninos-page'
+    };
+
+    const contenedor = document.querySelector(`#${idMap[categoria]} .grid`);
+    if (contenedor) {
+      contenedor.appendChild(card);
+      alert(`Tenis "${nombre}" cargado correctamente en la categoría ${categoria} (${marca}) con precio $${precio} y tallas: ${tallas.join(', ')}`);
+    } else {
+      alert('No se encontró la sección correspondiente. Verifica que exista el contenedor con id "' + idMap[categoria] + '".');
+    }
+
+    toggleUploadForm();
+  };
+
+  reader.readAsDataURL(foto);
+}
+</script>
+    <!-- Prueba de cargado de tenis-->
         
         <!-- Navigation -->
         <nav class="hidden md:flex space-x-8">
@@ -258,44 +548,7 @@
           </div>
         </div>
 
-        <!-- Product 4 - New Balance -->
-        <div class="product-card nike-hover group cursor-pointer" data-brand="newbalance">
-          <div class="relative overflow-hidden bg-green-50 rounded-lg mb-4">
-            <div class="product-image aspect-square flex items-center justify-center p-4">
-              <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&crop=center" alt="Fresh Foam Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
-            </div>
-            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="space-y-2">
-            <h3 class="font-medium text-black">Fresh Foam Elite</h3>
-            <p class="text-gray-500 text-sm">New Balance - Tenis para Hombre</p>
-            <p class="font-medium text-black">$890</p>
-            <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <p class="text-sm text-gray-600 mb-2">Talla:</p>
-              <div class="grid grid-cols-4 gap-2 mb-4">
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="7">7</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="8">8</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="9">9</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="10">10</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="11">11</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="12">12</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="13">13</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="14">14</button>
-              </div>
-            </div>
-            <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
-              Comprar por WhatsApp
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 5 - Reebok -->
+        <!-- Product 4 - Reebok -->
         <div class="product-card nike-hover group cursor-pointer" data-brand="reebok">
           <div class="relative overflow-hidden bg-red-50 rounded-lg mb-4">
             <div class="product-image aspect-square flex items-center justify-center p-4">
@@ -332,42 +585,7 @@
           </div>
         </div>
 
-        <!-- Product 6 - GuciCloudtec -->
-        <div class="product-card nike-hover group cursor-pointer" data-brand="gucicloudtec">
-          <div class="relative overflow-hidden bg-purple-50 rounded-lg mb-4">
-            <div class="product-image aspect-square flex items-center justify-center p-4">
-              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&crop=center" alt="Cloud Runner Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
-            </div>
-            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="space-y-2">
-            <h3 class="font-medium text-black">Cloud Runner Elite</h3>
-            <p class="text-gray-500 text-sm">GuciCloudtec - Tenis Unisex</p>
-            <p class="font-medium text-black">$1,250</p>
-            <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <p class="text-sm text-gray-600 mb-2">Talla:</p>
-              <div class="grid grid-cols-4 gap-2 mb-4">
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="7">7</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="8">8</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="9">9</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="10">10</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="11">11</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="12">12</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="13">13</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="14">14</button>
-              </div>
-            </div>
-            <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
-              Comprar por WhatsApp
-            </button>
-          </div>
-        </div>
+       
         
       </div>
     </div>
@@ -377,117 +595,6 @@
   <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        
-        <!-- Product 4 - New Balance -->
-        <div class="product-card nike-hover group cursor-pointer" data-brand="newbalance">
-          <div class="relative overflow-hidden bg-green-50 rounded-lg mb-4">
-            <div class="product-image aspect-square flex items-center justify-center p-4">
-              <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&crop=center" alt="Fresh Foam Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
-            </div>
-            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="space-y-2">
-            <h3 class="font-medium text-black">Fresh Foam Elite</h3>
-            <p class="text-gray-500 text-sm">New Balance - Tenis para Hombre</p>
-            <p class="font-medium text-black">$890</p>
-            <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <p class="text-sm text-gray-600 mb-2">Talla:</p>
-              <div class="grid grid-cols-4 gap-2 mb-4">
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="7">7</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="8">8</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="9">9</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="10">10</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="11">11</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="12">12</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="13">13</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="14">14</button>
-              </div>
-            </div>
-            <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
-              Comprar por WhatsApp
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 5 - Reebok -->
-        <div class="product-card nike-hover group cursor-pointer" data-brand="reebok">
-          <div class="relative overflow-hidden bg-red-50 rounded-lg mb-4">
-            <div class="product-image aspect-square flex items-center justify-center p-4">
-              <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=400&fit=crop&crop=center" alt="Classic Leather Pro" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
-            </div>
-            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="space-y-2">
-            <h3 class="font-medium text-black">Classic Leather Pro</h3>
-            <p class="text-gray-500 text-sm">Reebok - Tenis para Mujer</p>
-            <p class="font-medium text-black">$720</p>
-            <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <p class="text-sm text-gray-600 mb-2">Talla:</p>
-              <div class="grid grid-cols-4 gap-2 mb-4">
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="5">5</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="6">6</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="7">7</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="8">8</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="9">9</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="10">10</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="11">11</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="12">12</button>
-              </div>
-            </div>
-            <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
-              Comprar por WhatsApp
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 6 - GuciCloudtec -->
-        <div class="product-card nike-hover group cursor-pointer" data-brand="gucicloudtec">
-          <div class="relative overflow-hidden bg-purple-50 rounded-lg mb-4">
-            <div class="product-image aspect-square flex items-center justify-center p-4">
-              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&crop=center" alt="Cloud Runner Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
-            </div>
-            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="space-y-2">
-            <h3 class="font-medium text-black">Cloud Runner Elite</h3>
-            <p class="text-gray-500 text-sm">GuciCloudtec - Tenis Unisex</p>
-            <p class="font-medium text-black">$1,250</p>
-            <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <p class="text-sm text-gray-600 mb-2">Talla:</p>
-              <div class="grid grid-cols-4 gap-2 mb-4">
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="7">7</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="8">8</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="9">9</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="10">10</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="11">11</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="12">12</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="13">13</button>
-                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="14">14</button>
-              </div>
-            </div>
-            <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
-              Comprar por WhatsApp
-            </button>
-          </div>
-        </div>
         
       </div>
     </div>
@@ -1246,7 +1353,6 @@
             <li><a href="#" class="hover:text-black transition-colors">Guía de Tallas</a></li>
             <li><a href="#" class="hover:text-black transition-colors">Envíos y Devoluciones</a></li>
             <li><a href="#" class="hover:text-black transition-colors">Contacto</a></li>
-            <li><a href="#" class="hover:text-black transition-colors">FAQ</a></li>
           </ul>
         </div>
         
@@ -1274,7 +1380,7 @@
       </div>
       
       <div class="border-t border-gray-200 mt-12 pt-8 text-center">
-        <p class="text-gray-500 font-light">&copy; 2024 SneakerZone. Todos los derechos reservados.</p>
+        <p class="text-gray-500 font-light">&copy; 202 SneakerZone. Todos los derechos reservados.</p>
       </div>
     </div>
   </footer>
@@ -1607,5 +1713,1465 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+
+<!-- Injected fix: unified category values, visible insertion, and robust upload handler -->
+<script>
+(function() {
+  function toggleUploadForm() {
+    var f = document.getElementById('uploadForm');
+    if (f) f.classList.toggle('hidden');
+  }
+
+  function showSection(id) {
+    var sections = document.querySelectorAll('section');
+    sections.forEach(function(s){ s.classList.add('hidden'); });
+    var target = document.getElementById(id);
+    if (target) {
+      target.classList.remove('hidden');
+      try {
+        window.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+      } catch(e) { window.scrollTo(0, target.offsetTop || 0); }
+    }
+  }
+
+  // Override subirTenis globally
+  window.subirTenis = function() {
+    var nombreEl = document.getElementById('nombreTenis');
+    var precioEl = document.getElementById('precioTenis');
+    var catEl    = document.getElementById('categoria');
+    var marcaEl  = document.getElementById('marca');
+    var tallasEl = document.getElementById('tallasTenis');
+    var fotoEl   = document.getElementById('fotoTenis');
+
+    var nombre = nombreEl ? (nombreEl.value || '').trim() : '';
+    var precio = precioEl ? (precioEl.value || '').trim() : '';
+    var categoria = catEl ? (catEl.value || '').trim() : '';
+    var marca = marcaEl ? (marcaEl.value || '').trim() : '';
+    var tallas = tallasEl ? (tallasEl.value || '') : '';
+    tallas = tallas.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+
+    var foto = (fotoEl && fotoEl.files && fotoEl.files[0]) ? fotoEl.files[0] : null;
+
+    if (!nombre || !precio || !tallas.length || !foto) {
+      alert('Por favor completa todos los campos y selecciona una imagen.');
+      return;
+    }
+
+    // Normaliza niños -> ninos
+    if (categoria && categoria.toLowerCase() === 'niños') categoria = 'ninos';
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var imageUrl = e.target.result;
+
+      var card = document.createElement('div');
+      card.className = 'product-card nike-hover group cursor-pointer';
+      if (marca) card.setAttribute('data-brand', (marca || '').toLowerCase());
+      card.innerHTML = ''
+        + '<div class="relative overflow-hidden bg-gray-100 rounded-lg mb-4">'
+        + '  <div class="product-image aspect-square flex items-center justify-center p-4">'
+        + '    <img src="' + imageUrl + '" alt="' + nombre.replace(/"/g,'&quot;') + '" class="w-full h-full object-cover rounded-lg" onerror="this.style.display=\'none\'">'
+        + '  </div>'
+        + '</div>'
+        + '<div class="space-y-2">'
+        + '  <h3 class="font-medium text-black">' + nombre + '</h3>'
+        + '  <p class="text-gray-500 text-sm">' + (marca || '') + ' - Tenis para ' + (categoria ? (categoria.charAt(0).toUpperCase() + categoria.slice(1)) : '') + '</p>'
+        + '  <p class="font-medium text-black">$' + precio + '</p>'
+        + '  <div class="size-selector mt-4">'
+        + '    <p class="text-sm text-gray-600 mb-2">Talla:</p>'
+        + '    <div class="grid grid-cols-4 gap-2 mb-4">'
+        +          tallas.map(function(t){ return '<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="'+t+'">'+t+'</button>'; }).join('')
+        + '    </div>'
+        + '  </div>'
+        + '  <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 hover:bg-green-700" disabled>'
+        + '    Comprar por WhatsApp'
+        + '  </button>'
+        + '</div>';
+
+      var idMap = {
+        'hombre': 'men-catalog',
+        'mujer': 'women-catalog',
+        'ninos': 'ninos-page',
+        'niños': 'ninos-page'
+      };
+
+      var destinoId = idMap[categoria] || null;
+      var contenedor = null;
+      if (destinoId) {
+        var destino = document.getElementById(destinoId);
+        if (destino) contenedor = destino.querySelector('.grid');
+      }
+
+      if (contenedor) {
+        contenedor.appendChild(card);
+        showSection(destinoId);
+        alert('Tenis "' + nombre + '" cargado en ' + categoria + ' (' + (marca || '') + ') con precio $' + precio + ' y tallas: ' + tallas.join(', '));
+      } else {
+        // Fallback: insertar en inicio si existe
+        var homeGrid = document.querySelector('#productos .grid');
+        if (homeGrid) {
+          homeGrid.prepend(card);
+          showSection('productos');
+          alert('Sección de destino no encontrada. Se agregó en inicio.');
+        } else {
+          alert('No se encontró ninguna sección para insertar el producto.');
+        }
+      }
+
+      // Oculta el formulario después de subir
+      toggleUploadForm();
+      // Limpia el formulario para siguiente carga
+      if (nombreEl) nombreEl.value = '';
+      if (precioEl) precioEl.value = '';
+      if (tallasEl) tallasEl.value = '';
+      if (fotoEl) fotoEl.value = '';
+    };
+
+    reader.readAsDataURL(foto);
+  };
+})();
+</script>
+
+
+<!-- Injected: Gender pages brand filters + brand normalization + nav wiring -->
+<style>
+  /* Hide any existing brand lists inside gender pages to avoid duplication */
+  #men-catalog .brand-list, #women-catalog .brand-list, #ninos-page .brand-list,
+  #men-catalog .brand-grid, #women-catalog .brand-grid, #ninos-page .brand-grid,
+  #men-catalog .brands, #women-catalog .brands, #ninos-page .brands {
+    display: none !important;
+  }
+  .brand-bar{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0 1rem 0}
+  .brand-pill{padding:.5rem .9rem;border:1px solid #e5e7eb;border-radius:9999px;font-size:.9rem;cursor:pointer}
+  .brand-pill.active{border-color:#000}
+  .brand-status{font-size:.9rem;color:#6b7280;text-align:right;margin-bottom:.5rem}
+</style>
+<script>
+(function(){
+  // Normalize brand names (fix common misspellings)
+  function normalizeBrandName(name){
+    if(!name) return '';
+    var n = (name||'').toString().trim().toLowerCase();
+    var map = {
+      'guci':'gucci','guccy':'gucci','gucci':'gucci',
+      'guess':'guess',
+      'tommi hilfier':'tommy hilfiger','tommi hilfiger':'tommy hilfiger','tommy hilfier':'tommy hilfiger','tommyhilfiger':'tommy hilfiger','tommmy hilfiger':'tommy hilfiger',
+      'lacoste':'lacoste',
+      'converse':'converse',
+      'van':'vans','vans':'vans','vanz':'vans',
+      'nike':'nike',
+      'adidas':'adidas',
+      'newbalance':'new balance','new balance':'new balance'
+    };
+    return (map[n] || n).replace(/\s+/g,' ').trim();
+  }
+
+  // Ensure brand bar inside a given section (men-catalog, women-catalog, ninos-page)
+  var BRANDS = ['Todos','Nike','Adidas','New Balance','Guess','Gucci','Tommy Hilfiger','Lacoste','Converse','Vans'];
+
+  function ensureBrandBar(sectionId){
+    var section = document.getElementById(sectionId);
+    if(!section) return;
+    // If already exists, do nothing
+    if(section.querySelector('.brand-bar')) return;
+
+    // Status
+    var status = document.createElement('div');
+    status.className = 'brand-status';
+    status.innerHTML = 'Filtro activo: <strong>Todos</strong>';
+
+    // Pills
+    var bar = document.createElement('div');
+    bar.className = 'brand-bar';
+    BRANDS.forEach(function(lbl, idx){
+      var pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'brand-pill' + (idx===0?' active':'');
+      pill.setAttribute('data-brand-filter', lbl.toLowerCase());
+      pill.textContent = lbl;
+      bar.appendChild(pill);
+    });
+
+    // Insert near top of section (before grid)
+    var grid = section.querySelector('.grid');
+    section.insertBefore(status, grid || section.firstChild);
+    section.insertBefore(bar, grid || section.firstChild);
+
+    // Filtering behavior (only within this section)
+    bar.addEventListener('click', function(e){
+      if(!(e.target && e.target.matches('.brand-pill'))) return;
+      var target = (e.target.getAttribute('data-brand-filter') || '').toLowerCase();
+      bar.querySelectorAll('.brand-pill').forEach(function(p){ p.classList.remove('active'); });
+      e.target.classList.add('active');
+      status.innerHTML = 'Filtro activo: <strong>' + (e.target.textContent || 'Todos') + '</strong>';
+
+      var cards = section.querySelectorAll('.grid .product-card');
+      cards.forEach(function(card){
+        var b = (card.getAttribute('data-brand') || '').toLowerCase().trim();
+        if(target === 'todos' || !target){
+          card.style.display = '';
+        }else{
+          card.style.display = (b === target) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  // Hook nav menu (Hombre/Mujer/Niños) to open their pages and show brand bar
+  function hookNav(){
+    var anchors = Array.from(document.querySelectorAll('a, button'));
+    anchors.forEach(function(a){
+      var txt = (a.textContent || '').trim().toLowerCase();
+      if(txt === 'hombre'){
+        a.addEventListener('click', function(ev){ try{ev.preventDefault();}catch(_){}
+          if(window.showSection) window.showSection('men-catalog');
+          ensureBrandBar('men-catalog');
+        });
+      }
+      if(txt === 'mujer'){
+        a.addEventListener('click', function(ev){ try{ev.preventDefault();}catch(_){}
+          if(window.showSection) window.showSection('women-catalog');
+          ensureBrandBar('women-catalog');
+        });
+      }
+      if(txt === 'niños' || txt === 'ninos'){
+        a.addEventListener('click', function(ev){ try{ev.preventDefault();}catch(_){}
+          if(window.showSection) window.showSection('ninos-page');
+          ensureBrandBar('ninos-page');
+        });
+      }
+    });
+  }
+
+  // Enhance existing subirTenis to normalize brand and keep data-brand consistent
+  var prevSubir = window.subirTenis;
+  window.subirTenis = function(){
+    if (typeof prevSubir === 'function') {
+      // Observe and normalize the next added product-card
+      var obs = new MutationObserver(function(muts){
+        muts.forEach(function(m){
+          m.addedNodes && m.addedNodes.forEach(function(node){
+            if(node && node.classList && node.classList.contains('product-card')){
+              var b = node.getAttribute('data-brand') || '';
+              var norm = normalizeBrandName(b);
+              if(norm) node.setAttribute('data-brand', norm.toLowerCase());
+            }
+          });
+        });
+      });
+      obs.observe(document.body, {childList:true, subtree:true});
+      prevSubir();
+      ensureBrandBar('men-catalog'); ensureBrandBar('women-catalog'); ensureBrandBar('ninos-page');
+      setTimeout(function(){ try{obs.disconnect();}catch(_){} }, 1200);
+      return;
+    }
+  };
+
+  // On DOM ready, ensure bars in gender pages
+  document.addEventListener('DOMContentLoaded', function(){
+    ensureBrandBar('men-catalog');
+    ensureBrandBar('women-catalog');
+    ensureBrandBar('ninos-page');
+    hookNav();
+  });
+})();
+</script>
+
+<!-- Injected: robust hash router + brand filtering -->
+<script>
+(function(){
+  // --- Simple Router (hash-based) ---
+  function hideAllSections(){
+    document.querySelectorAll('section').forEach(function(s){ s.classList.add('hidden'); });
+  }
+  function show(id){
+    var el = document.getElementById(id);
+    if(el){
+      el.classList.remove('hidden');
+      try{ el.scrollIntoView({behavior:'smooth', block:'start'}); }catch(_){}
+    }
+  }
+  function routeTo(id){
+    try{ensureBrandBar(id);}catch(_){}
+
+    hideAllSections();
+    show(id);
+  }
+  function routeFromHash(){
+    var h = (location.hash || '').replace(/^#/, '');
+    if(h === 'men' || h === 'men-catalog') return routeTo('men-catalog');
+    if(h === 'women' || h === 'women-catalog') return routeTo('women-catalog');
+    if(h === 'kids' || h === 'ninos' || h === 'niños' || h === 'ninos-page') return routeTo('ninos-page');
+    // default: show home/products
+    var home = document.getElementById('productos') || document.getElementById('hero') || document.querySelector('section');
+    if(home){ home.classList.remove('hidden'); }
+  }
+  window.addEventListener('hashchange', routeFromHash);
+  document.addEventListener('DOMContentLoaded', routeFromHash);
+
+  // Wire explicit links for Hombre/Mujer/Niños to hashes
+  document.addEventListener('DOMContentLoaded', function(){
+    Array.from(document.querySelectorAll('a,button')).forEach(function(a){
+      var t = (a.textContent || '').trim().toLowerCase();
+      if(t === 'hombre'){ a.setAttribute('href', '#men-catalog'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash = 'men-catalog'; try{ensureBrandBar('men-catalog');}catch(_){}; }); }
+      if(t === 'mujer'){ a.setAttribute('href', '#women-catalog'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash = 'women-catalog'; try{ensureBrandBar('women-catalog');}catch(_){}; }); }
+      if(t === 'niños' || t === 'ninos'){ a.setAttribute('href', '#ninos-page'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash = 'ninos-page'; try{ensureBrandBar('ninos-page');}catch(_){}; }); }
+    });
+  });
+
+  // --- Brand Bar (ensure + filtering) ---
+  var BRANDS = ['Todos','Nike','Adidas','New Balance','Guess','Gucci','Tommy Hilfiger','Lacoste','Converse','Vans'];
+  var ALIASES = {
+    'new balance': ['newbalance','new-balance','nb'],
+    'tommy hilfiger': ['tommyhilfiger','tommi hilfier','tommi hilfiger','tommy hilfier','tommmy hilfiger'],
+    'gucci': ['guci','guccy'],
+    'vans': ['van','vanz']
+  };
+  function normalizeBrand(s){
+    if(!s) return '';
+    s = s.toLowerCase().trim();
+    for (var key in ALIASES){
+      var arr = ALIASES[key];
+      if(s === key) return key;
+      for (var i=0;i<arr.length;i++){ if(s === arr[i]) return key; }
+    }
+    return s.replace(/\s+/g,' ').trim();
+  }
+  function ensureBrandBar(sectionId){
+    var section = document.getElementById(sectionId);
+    if(!section) return;
+    if(section.querySelector('.brand-bar')) return;
+
+    var status = document.createElement('div');
+    status.className = 'brand-status';
+    status.innerHTML = 'Filtro activo: <strong>Todos</strong>';
+
+    var bar = document.createElement('div');
+    bar.className = 'brand-bar';
+    BRANDS.forEach(function(lbl, idx){
+      var pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'brand-pill' + (idx===0?' active':'');
+      pill.setAttribute('data-brand-filter', lbl.toLowerCase());
+      pill.textContent = lbl;
+      bar.appendChild(pill);
+    });
+
+    var grid = section.querySelector('.grid');
+    section.insertBefore(status, grid || section.firstChild);
+    section.insertBefore(bar, grid || section.firstChild);
+
+    bar.addEventListener('click', function(e){
+      if(!(e.target && e.target.matches('.brand-pill'))) return;
+      var target = (e.target.getAttribute('data-brand-filter') || '').toLowerCase();
+      bar.querySelectorAll('.brand-pill').forEach(function(p){ p.classList.remove('active'); });
+      e.target.classList.add('active');
+      status.innerHTML = 'Filtro activo: <strong>' + (e.target.textContent || 'Todos') + '</strong>';
+
+      var cards = section.querySelectorAll('.grid .product-card');
+      cards.forEach(function(card){
+        var b = normalizeBrand(card.getAttribute('data-brand') || '');
+        if(target === 'todos' || !target){ card.style.display = ''; return; }
+        card.style.display = (b === target) ? '' : 'none';
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    ['men-catalog','women-catalog','ninos-page'].forEach(ensureBrandBar);
+  });
+})();
+</script>
+
+<!-- Injected: top-of-section brand bars for all target pages -->
+<script>
+(function(){
+  var BRANDS = ['Nike','Adidas','New Balance','Guess','Gucci','Tommy Hilfiger','Lacoste','Converse','Vans'];
+  function makeBar(){
+    var wrap = document.createElement('div');
+    wrap.className = 'brand-bar';
+    BRANDS.forEach(function(lbl, idx){
+      var pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'brand-pill' + (idx===0?' active':'');
+      pill.setAttribute('data-brand-filter', lbl.toLowerCase());
+      pill.textContent = lbl;
+      wrap.appendChild(pill);
+    });
+    return wrap;
+  }
+  function normalize(s){
+    s = (s||'').toLowerCase().trim();
+    var map = {'newbalance':'new balance','tommyhilfiger':'tommy hilfiger','tommi hilfier':'tommy hilfiger','guci':'gucci','van':'vans','vanz':'vans'};
+    return (map[s]||s);
+  }
+  function attachFiltering(section){
+    var bar = section.querySelector('.brand-bar');
+    if(!bar) return;
+    bar.addEventListener('click', function(e){
+      if(!(e.target && e.target.matches('.brand-pill'))) return;
+      bar.querySelectorAll('.brand-pill').forEach(function(p){ p.classList.remove('active'); });
+      e.target.classList.add('active');
+      var target = (e.target.getAttribute('data-brand-filter')||'').toLowerCase();
+      var cards = section.querySelectorAll('.grid .product-card');
+      cards.forEach(function(card){
+        var b = normalize(card.getAttribute('data-brand')||'');
+        card.style.display = (!target || normalize(target)===normalize('nike') && e.target.textContent==='Nike') ? card.style.display : card.style.display;
+        if(!target){ card.style.display=''; }
+        else { card.style.display = (b===normalize(target)) ? '' : 'none'; }
+      });
+    });
+  }
+  window.ensureBrandBarTop = function(sectionId){
+    var section = document.getElementById(sectionId);
+    if(!section) return;
+    if(section.querySelector(':scope > .brand-bar')) { attachFiltering(section); return; }
+    // Insert as the FIRST element inside the section (top position under header)
+    var bar = makeBar();
+    if(section.firstElementChild){
+      section.insertBefore(bar, section.firstElementChild.nextSibling || section.firstElementChild);
+    } else {
+      section.appendChild(bar);
+    }
+    attachFiltering(section);
+  };
+
+  // Hook router to ensure bars for all target pages
+  document.addEventListener('DOMContentLoaded', function(){
+    ['men-catalog','women-catalog','ninos-page','nuevos-lanzamientos-page','ofertas-page'].forEach(function(id){
+      try{ ensureBrandBarTop(id); }catch(_){}
+    });
+    // Also wire nav clicks again for hash routing
+    Array.from(document.querySelectorAll('a,button')).forEach(function(a){
+      var t = (a.textContent||'').trim().toLowerCase();
+      if(t==='hombre'){ a.setAttribute('href','#men-catalog'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash='men-catalog'; ensureBrandBarTop('men-catalog');}); }
+      if(t==='mujer'){ a.setAttribute('href','#women-catalog'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash='women-catalog'; ensureBrandBarTop('women-catalog');}); }
+      if(t==='niños' || t==='ninos'){ a.setAttribute('href','#ninos-page'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash='ninos-page'; ensureBrandBarTop('ninos-page');}); }
+      if(t==='nuevos lanzamientos'){ a.setAttribute('href','#nuevos-lanzamientos-page'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash='nuevos-lanzamientos-page'; ensureBrandBarTop('nuevos-lanzamientos-page');}); }
+      if(t==='ofertas'){ a.setAttribute('href','#ofertas-page'); a.addEventListener('click', function(e){ e.preventDefault(); location.hash='ofertas-page'; ensureBrandBarTop('ofertas-page');}); }
+    });
+  });
+
+  // When hash changes, ensure the bar exists and is visible
+  window.addEventListener('hashchange', function(){
+    var h = (location.hash||'').replace(/^#/,'');
+    if(h==='men-catalog'||h==='women-catalog'||h==='ninos-page'||h==='nuevos-lanzamientos-page'||h==='ofertas-page'){
+      try{ ensureBrandBarTop(h); }catch(_){}
+    }
+  });
+})();
+</script>
+
+<!-- Injected JS: fixed top-of-section brand bar + filters -->
+<script>
+(function(){
+  var BRAND_LIST = ['Nike','Adidas','New Balance','Guess','Gucci','Tommy Hilfiger','Lacoste','Converse','Vans'];
+  var TARGET_SECTIONS = ['men-catalog','women-catalog','ninos-page','nuevos-lanzamientos-page','ofertas-page'];
+
+  function normalizeBrand(s){
+    s = (s||'').toLowerCase().trim();
+    var map = {'newbalance':'new balance','tommyhilfiger':'tommy hilfiger','tommi hilfier':'tommy hilfiger','guci':'gucci','van':'vans','vanz':'vans'};
+    return (map[s]||s);
+  }
+
+  function getPriceFromCard(card){
+    var p = card.querySelector('.font-medium.text-black');
+    if(!p) return null;
+    var m = (p.textContent||'').match(/([\d,.]+)/);
+    if(!m) return null;
+    return parseFloat(m[1].replace(/\./g,'').replace(',', '.'));
+  }
+
+  function cardHasSize(card, size){
+    if(!size) return true;
+    size = size.toString().trim();
+    var btns = card.querySelectorAll('.size-btn');
+    for(var i=0;i<btns.length;i++){
+      var s = (btns[i].getAttribute('data-size')||btns[i].textContent||'').trim();
+      if(s == size) return true;
+    }
+    return false;
+  }
+
+  function ensureToolbar(sectionId){
+    var sec = document.getElementById(sectionId);
+    if(!sec) return;
+    // If already exists directly under section, keep it
+    var exists = sec.querySelector(':scope > .section-toolbar');
+    if(exists) return;
+
+    var toolbar = document.createElement('div');
+    toolbar.className = 'section-toolbar';
+
+    var brandBar = document.createElement('div');
+    brandBar.className = 'brand-bar';
+    BRAND_LIST.forEach(function(lbl, idx){
+      var pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'brand-pill' + (idx===0?' active':'');
+      pill.setAttribute('data-brand-filter', lbl.toLowerCase());
+      pill.textContent = lbl;
+      brandBar.appendChild(pill);
+    });
+
+    var filterBtn = document.createElement('button');
+    filterBtn.type = 'button';
+    filterBtn.className = 'filter-btn';
+    filterBtn.textContent = 'Filtros';
+
+    var panel = document.createElement('div');
+    panel.className = 'filters-panel';
+    var panelId = 'filters-panel-' + sectionId;
+    panel.id = panelId;
+    panel.innerHTML = ''
+      + '<div class="filters-group">'
+      +   '<div>'
+      +     '<label>Precio mínimo</label><br/>'
+      +     '<input type="number" step="0.01" id="'+panelId+'-min" placeholder="0" style="border:1px solid #e5e7eb;border-radius:8px;padding:.4rem;width:160px">'
+      +   '</div>'
+      +   '<div>'
+      +     '<label>Precio máximo</label><br/>'
+      +     '<input type="number" step="0.01" id="'+panelId+'-max" placeholder="99999" style="border:1px solid #e5e7eb;border-radius:8px;padding:.4rem;width:160px">'
+      +   '</div>'
+      +   '<div>'
+      +     '<label>Tallas</label><br/>'
+      +     '<input type="text" id="'+panelId+'-sizes" placeholder="Ej: 25, 26.5, 7" style="border:1px solid #e5e7eb;border-radius:8px;padding:.4rem;width:220px">'
+      +   '</div>'
+      +   '<div>'
+      +     '<label>Marca</label><br/>'
+      +     '<select id="'+panelId+'-brand" style="border:1px solid #e5e7eb;border-radius:8px;padding:.45rem;width:200px">'
+      +       '<option value="">Todas</option>'
+      +       + BRAND_LIST.map(function(b){ return '<option value="'+b.toLowerCase()+'">'+b+'</option>'; }).join('')
+      +     '</select>'
+      +   '</div>'
+      + '</div>'
+      + '<button class="filters-apply" id="'+panelId+'-apply">Aplicar filtros</button>';
+
+    toolbar.appendChild(brandBar);
+    toolbar.appendChild(filterBtn);
+
+    // Insert toolbar after section's main title if present (just under any heading)
+    if(sec.firstChild){
+      
+var h2 = sec.querySelector('h2');
+if (h2 && h2.nextSibling) {
+  sec.insertBefore(toolbar, h2.nextSibling);
+  sec.insertBefore(panel, toolbar.nextSibling);
+} else {
+  sec.insertBefore(toolbar, sec.firstElementChild);
+  sec.insertBefore(panel, toolbar.nextSibling);
+}
+
+      sec.insertBefore(panel, toolbar.nextSibling);
+    } else {
+      sec.appendChild(toolbar);
+      sec.appendChild(panel);
+    }
+
+    filterBtn.addEventListener('click', function(){
+      panel.classList.toggle('show');
+    });
+
+    // Brand pill filtering (within section)
+    brandBar.addEventListener('click', function(e){
+      if(!(e.target && e.target.matches('.brand-pill'))) return;
+      brandBar.querySelectorAll('.brand-pill').forEach(function(p){ p.classList.remove('active'); });
+      e.target.classList.add('active');
+      var target = (e.target.getAttribute('data-brand-filter')||'').toLowerCase();
+      applyFilters(sectionId, { brand: target });
+    });
+
+    // Apply button filters
+    document.getElementById(panelId+'-apply').addEventListener('click', function(){
+      var min = parseFloat(document.getElementById(panelId+'-min').value || '0');
+      var maxVal = document.getElementById(panelId+'-max').value;
+      var max = maxVal ? parseFloat(maxVal) : Number.POSITIVE_INFINITY;
+      var sizesStr = document.getElementById(panelId+'-sizes').value || '';
+      var sizes = sizesStr.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+      var brand = (document.getElementById(panelId+'-brand').value || '').toLowerCase();
+      applyFilters(sectionId, { min:min, max:max, sizes:sizes, brand:brand });
+    });
+  }
+
+  function applyFilters(sectionId, opts){
+    var sec = document.getElementById(sectionId);
+    if(!sec) return;
+    opts = opts || {};
+    var cards = sec.querySelectorAll('.grid .product-card');
+    var shown = 0;
+    cards.forEach(function(card){
+      var br = normalizeBrand(card.getAttribute('data-brand')||'');
+      var price = getPriceFromCard(card);
+      var ok = true;
+
+      if(opts.brand && opts.brand !== '' && normalizeBrand(opts.brand) !== br){ ok = false; }
+      if(typeof opts.min === 'number' && price !== null && price < opts.min) ok = false;
+      if(typeof opts.max === 'number' && price !== null && price > opts.max) ok = false;
+      if(opts.sizes && opts.sizes.length){
+        var any = false;
+        for(var i=0;i<opts.sizes.length;i++){
+          if(cardHasSize(card, opts.sizes[i])){ any = true; break; }
+        }
+        if(!any) ok = false;
+      }
+      card.style.display = ok ? '' : 'none';
+      if(ok) shown++;
+    });
+
+    var empty = sec.querySelector('.no-results');
+    if(!empty){
+      empty = document.createElement('div');
+      empty.className = 'no-results';
+      empty.textContent = 'No hay productos que coincidan con el filtro.';
+      sec.appendChild(empty);
+    }
+    empty.style.display = shown ? 'none' : '';
+  }
+
+  function ensureAllToolbars(){
+    TARGET_SECTIONS.forEach(function(id){ try{ ensureToolbar(id); }catch(_){ } });
+  }
+
+  document.addEventListener('DOMContentLoaded', ensureAllToolbars);
+  window.addEventListener('hashchange', ensureAllToolbars);
+  window.ensureToolbar = ensureToolbar;
+})();
+</script>
+
+<!-- Injected cleanup + precise placement -->
+<script>
+(function(){
+  var TARGET_SECTIONS = ['men-catalog','women-catalog','ninos-page','nuevos-lanzamientos-page','ofertas-page'];
+
+  function removeLegacyBrandUIs(sec){
+    if(!sec) return;
+    // Remove old brand buttons and containers
+    sec.querySelectorAll('.kids-brand-btn, .women-brand-btn, .men-brand-btn, .kids-brand-container, .women-brand-container, .men-brand-container, .brand-dropdown, .mega-menu, .submenu, .dropdown, .menu-brands')
+      .forEach(function(el){ el.remove(); });
+    // Remove brand bars that are NOT inside our toolbar
+    sec.querySelectorAll('.brand-bar').forEach(function(el){
+      if(!el.closest('.section-toolbar')) el.remove();
+    });
+  }
+
+  function moveToolbarBelowTitle(sec){
+    if(!sec) return;
+    var toolbar = sec.querySelector(':scope > .section-toolbar');
+    if(!toolbar) return;
+
+    // Find title (h2) and its subtitle (first <p> after h2)
+    var h2 = sec.querySelector('h2');
+    var subtitle = null;
+    if(h2){
+      // find first <p> sibling after h2 within the same section
+      var n = h2.nextElementSibling;
+      while(n){
+        if(n.tagName && n.tagName.toLowerCase() === 'p'){ subtitle = n; break; }
+        // stop before we hit grid or other containers
+        if(n.classList && (n.classList.contains('grid') || n.classList.contains('brand-bar') || n.classList.contains('section-toolbar'))) break;
+        n = n.nextElementSibling;
+      }
+    }
+    // Insert after subtitle if exists, else after h2; fallback: as first element
+    if(subtitle && subtitle.parentNode === sec){
+      if(toolbar !== subtitle.nextSibling){
+        sec.insertBefore(toolbar, subtitle.nextSibling);
+      }
+    } else if(h2 && h2.parentNode === sec){
+      if(toolbar !== h2.nextSibling){
+        sec.insertBefore(toolbar, h2.nextSibling);
+      }
+    } else {
+      // fallback keep as first child after any heading wrappers
+      if(sec.firstElementChild && toolbar !== sec.firstElementChild.nextSibling){
+        sec.insertBefore(toolbar, sec.firstElementChild.nextSibling);
+      }
+    }
+  }
+
+  function ensureEverything(){
+    TARGET_SECTIONS.forEach(function(id){
+      var sec = document.getElementById(id);
+      if(!sec) return;
+      // Ensure our toolbar exists (function from previous patch)
+      if(typeof window.ensureToolbar === 'function') window.ensureToolbar(id);
+      // Clean legacy UIs in that section
+      removeLegacyBrandUIs(sec);
+      // Place toolbar exactly below title & subtitle
+      moveToolbarBelowTitle(sec);
+      // Also remove any stray brand bars left not in toolbar
+      sec.querySelectorAll('.brand-bar').forEach(function(el){
+        if(!el.closest('.section-toolbar')) el.remove();
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', ensureEverything);
+  window.addEventListener('hashchange', ensureEverything);
+  // Also run when images/products load late
+  setTimeout(ensureEverything, 800);
+})();
+</script>
+
+<!-- Injected: precise placement of toolbar under title/subtitle -->
+<script>
+(function(){
+  var BRAND_LIST = ['Nike','Adidas','New Balance','Guess','Gucci','Tommy Hilfiger','Lacoste','Converse','Vans'];
+  var TARGET_SECTIONS = ['men-catalog','women-catalog','ninos-page','nuevos-lanzamientos-page','ofertas-page'];
+
+  function ensureHeaderToolbar(sectionId){
+    var sec = document.getElementById(sectionId);
+    if(!sec) return;
+
+    // Find title H2 and its header container (commonly .text-center.mb-16)
+    var h2 = sec.querySelector('h2');
+    var headerBox = h2 ? h2.closest('.text-center') || h2.parentElement : null;
+    if(!headerBox) headerBox = sec;
+
+    // Remove any legacy brand filter blocks inside header
+    headerBox.querySelectorAll('.kids-brand-btn, .women-brand-btn, .men-brand-btn, [onclick^="filterKidsByBrand"], [onclick^="filterWomenByBrand"], [onclick^="filterMenByBrand"]').forEach(function(el){
+      var host = el.closest('div');
+      if(host) host.remove();
+      else el.remove();
+    });
+
+    // Find existing toolbar; if not present, create it
+    var toolbar = headerBox.querySelector(':scope > .section-toolbar');
+    if(!toolbar){
+      toolbar = document.createElement('div');
+      toolbar.className = 'section-toolbar';
+
+      var brandBar = document.createElement('div');
+      brandBar.className = 'brand-bar';
+      BRAND_LIST.forEach(function(lbl, idx){
+        var pill = document.createElement('button');
+        pill.type = 'button';
+        pill.className = 'brand-pill' + (idx===0?' active':'');
+        pill.setAttribute('data-brand-filter', lbl.toLowerCase());
+        pill.textContent = lbl;
+        brandBar.appendChild(pill);
+      });
+
+      var filterBtn = document.createElement('button');
+      filterBtn.type = 'button';
+      filterBtn.className = 'filter-btn';
+      filterBtn.textContent = 'Filtros';
+
+      var panel = document.createElement('div');
+      panel.className = 'filters-panel';
+      panel.innerHTML = '<div style="color:#6b7280">Usa el panel de filtros añadido más abajo en esta misma sección.</div>';
+
+      toolbar.appendChild(brandBar);
+      toolbar.appendChild(filterBtn);
+      // default: hidden panel (your existing full panel remains lower in DOM if present)
+      filterBtn.addEventListener('click', function(){
+        // Try to open the main panel for this section if exists
+        var realPanel = sec.querySelector('.filters-panel');
+        if(realPanel) realPanel.classList.toggle('show');
+      });
+    }
+
+    // Place toolbar right AFTER subtitle <p> that follows h2
+    var subtitle = null;
+    if(h2){
+      var n = h2.nextElementSibling;
+      while(n){
+        if(n.tagName && n.tagName.toLowerCase()==='p'){ subtitle = n; break; }
+        n = n.nextElementSibling;
+      }
+    }
+    if(subtitle && subtitle.parentNode === headerBox){
+      if(toolbar !== subtitle.nextSibling){
+        headerBox.insertBefore(toolbar, subtitle.nextSibling);
+      }
+    } else if(h2 && h2.parentNode === headerBox){
+      if(toolbar !== h2.nextSibling){
+        headerBox.insertBefore(toolbar, h2.nextSibling);
+      }
+    } else {
+      // fallback: top of header box
+      headerBox.insertBefore(toolbar, headerBox.firstChild);
+    }
+  }
+
+  function run(){
+    TARGET_SECTIONS.forEach(ensureHeaderToolbar);
+  }
+  document.addEventListener('DOMContentLoaded', run);
+  window.addEventListener('hashchange', run);
+  setTimeout(run, 600);
+})();
+</script>
+
+<!-- Injected: deduplicate brand bars (keep only header toolbar) -->
+<script>
+(function(){
+  var TARGET_SECTIONS = ['men-catalog','women-catalog','ninos-page','nuevos-lanzamientos-page','ofertas-page'];
+
+  function headerBoxOf(sec){
+    var h2 = sec.querySelector('h2');
+    var box = h2 ? (h2.closest('.text-center') || h2.parentElement) : sec;
+    return box || sec;
+  }
+
+  function keepOnlyHeaderToolbar(sectionId){
+    var sec = document.getElementById(sectionId);
+    if(!sec) return;
+    var header = headerBoxOf(sec);
+
+    // Ensure there is one toolbar in header (created by prior patch)
+    var headerToolbar = header.querySelector(':scope > .section-toolbar');
+
+    // Remove ALL .section-toolbar and .brand-bar that are NOT inside header
+    sec.querySelectorAll('.section-toolbar, .brand-bar').forEach(function(el){
+      if(!header.contains(el)) el.remove();
+    });
+
+    // Also remove any legacy containers with brand pills we recognize
+    sec.querySelectorAll('[onclick^="filterKidsByBrand"],[onclick^="filterWomenByBrand"],[onclick^="filterMenByBrand"]').forEach(function(el){
+      var host = el.closest('div'); if(host) host.remove(); else el.remove();
+    });
+  }
+
+  function run(){
+    TARGET_SECTIONS.forEach(keepOnlyHeaderToolbar);
+  }
+  document.addEventListener('DOMContentLoaded', run);
+  window.addEventListener('hashchange', run);
+  // In case other scripts add duplicates later, observe and re-run once.
+  setTimeout(run, 500);
+  setTimeout(run, 1200);
+})();
+</script>
+
+<!-- Injected: 'Todos' brand button + working Filters panel per section -->
+<script>
+(function(){
+  var BRAND_LIST = ['Todos','Nike','Adidas','New Balance','Guess','Gucci','Tommy Hilfiger','Lacoste','Converse','Vans'];
+  var TARGET_SECTIONS = ['men-catalog','women-catalog','ninos-page','nuevos-lanzamientos-page','ofertas-page'];
+
+  function normalizeBrand(s){
+    s = (s||'').toLowerCase().trim();
+    var map = {'newbalance':'new balance','tommyhilfiger':'tommy hilfiger','tommi hilfier':'tommy hilfiger','guci':'gucci','van':'vans','vanz':'vans'};
+    return (map[s]||s);
+  }
+
+  function getPriceFromCard(card){
+    var p = card.querySelector('.font-medium.text-black');
+    if(!p) return null;
+    var m = (p.textContent||'').match(/([\d,.]+)/);
+    if(!m) return null;
+    return parseFloat(m[1].replace(/\./g,'').replace(',', '.'));
+  }
+
+  function cardHasSize(card, size){
+    if(!size) return true;
+    size = size.toString().trim();
+    var btns = card.querySelectorAll('.size-btn');
+    for(var i=0;i<btns.length;i++){
+      var s = (btns[i].getAttribute('data-size')||btns[i].textContent||'').trim();
+      if(s == size) return true;
+    }
+    return false;
+  }
+
+  function headerBoxOf(sec){
+    var h2 = sec.querySelector('h2');
+    return h2 ? (h2.closest('.text-center') || h2.parentElement) : sec;
+  }
+
+  function buildPanel(sectionId){
+    var panel = document.createElement('div');
+    panel.className = 'filters-panel';
+    var pid = 'filters-panel-' + sectionId;
+    panel.id = pid;
+    panel.innerHTML = ''
+      + '<div class="filters-group">'
+      +   '<div><label>Precio mínimo</label><br/>'
+      +     '<input type="number" step="0.01" id="'+pid+'-min" placeholder="0" style="border:1px solid #e5e7eb;border-radius:8px;padding:.4rem;width:160px"></div>'
+      +   '<div><label>Precio máximo</label><br/>'
+      +     '<input type="number" step="0.01" id="'+pid+'-max" placeholder="99999" style="border:1px solid #e5e7eb;border-radius:8px;padding:.4rem;width:160px"></div>'
+      +   '<div><label>Tallas</label><br/>'
+      +     '<input type="text" id="'+pid+'-sizes" placeholder="Ej: 25, 26.5, 7" style="border:1px solid #e5e7eb;border-radius:8px;padding:.4rem;width:220px"></div>'
+      +   '<div><label>Marca</label><br/>'
+      +     '<select id="'+pid+'-brand" style="border:1px solid #e5e7eb;border-radius:8px;padding:.45rem;width:200px">'
+      +       BRAND_LIST.map(function(b){ return '<option value="'+b.toLowerCase()+'">'+b+'</option>'; }).join('')
+      +     + '</select></div>'
+      + '</div>'
+      + '<button class="filters-apply" id="'+pid+'-apply">Aplicar filtros</button>';
+    return panel;
+  }
+
+  function applyFilters(sectionId, opts){
+    var sec = document.getElementById(sectionId);
+    if(!sec) return;
+    opts = opts || {};
+    var cards = sec.querySelectorAll('.grid .product-card');
+    var shown = 0;
+    cards.forEach(function(card){
+      var br = normalizeBrand(card.getAttribute('data-brand')||'');
+      var price = getPriceFromCard(card);
+      var ok = true;
+
+      // brand: 'todos' or '' means no brand filter
+      if(opts.brand && opts.brand !== 'todos' && normalizeBrand(opts.brand) !== br){ ok = false; }
+      if(typeof opts.min === 'number' && price !== null && price < opts.min) ok = false;
+      if(typeof opts.max === 'number' && price !== null && price > opts.max) ok = false;
+      if(opts.sizes && opts.sizes.length){
+        var any = false;
+        for(var i=0;i<opts.sizes.length;i++){
+          if(cardHasSize(card, opts.sizes[i])){ any = true; break; }
+        }
+        if(!any) ok = false;
+      }
+      card.style.display = ok ? '' : 'none';
+      if(ok) shown++;
+    });
+
+    var empty = sec.querySelector('.no-results');
+    if(!empty){
+      empty = document.createElement('div');
+      empty.className = 'no-results';
+      empty.textContent = 'No hay productos que coincidan con el filtro.';
+      sec.appendChild(empty);
+    }
+    empty.style.display = shown ? 'none' : '';
+  }
+
+  function rebuildHeaderToolbar(sectionId){
+    var sec = document.getElementById(sectionId);
+    if(!sec) return;
+    var header = headerBoxOf(sec);
+
+    // Remove any toolbars not in header
+    sec.querySelectorAll('.section-toolbar').forEach(function(tb){
+      if(!header.contains(tb)) tb.remove();
+    });
+
+    // Ensure toolbar in header
+    var toolbar = header.querySelector(':scope > .section-toolbar');
+    if(!toolbar){
+      toolbar = document.createElement('div');
+      toolbar.className = 'section-toolbar';
+      header.appendChild(toolbar);
+    } else {
+      toolbar.innerHTML = ''; // reset to avoid duplicates
+    }
+
+    // Build brand bar with 'Todos'
+    var brandBar = document.createElement('div');
+    brandBar.className = 'brand-bar';
+    BRAND_LIST.forEach(function(lbl, idx){
+      var pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'brand-pill' + (idx===0?' active':'');
+      pill.setAttribute('data-brand-filter', lbl.toLowerCase());
+      pill.textContent = lbl;
+      brandBar.appendChild(pill);
+    });
+
+    // Build filter btn + panel
+    var filterBtn = document.createElement('button');
+    filterBtn.type = 'button';
+    filterBtn.className = 'filter-btn';
+    filterBtn.textContent = 'Filtros';
+    var panel = buildPanel(sectionId);
+
+    toolbar.appendChild(brandBar);
+    toolbar.appendChild(filterBtn);
+    // place panel right after toolbar in header
+    header.insertBefore(panel, toolbar.nextSibling);
+
+    // Wiring
+    filterBtn.addEventListener('click', function(){ panel.classList.toggle('show'); });
+    brandBar.addEventListener('click', function(e){
+      if(!(e.target && e.target.matches('.brand-pill'))) return;
+      brandBar.querySelectorAll('.brand-pill').forEach(function(p){ p.classList.remove('active'); });
+      e.target.classList.add('active');
+      var target = (e.target.getAttribute('data-brand-filter')||'').toLowerCase();
+      applyFilters(sectionId, { brand: target });
+    });
+
+    var pid = panel.id;
+    panel.querySelector('#'+pid+'-apply').addEventListener('click', function(){
+      var min = parseFloat((panel.querySelector('#'+pid+'-min').value||'0'));
+      var maxVal = panel.querySelector('#'+pid+'-max').value;
+      var max = maxVal ? parseFloat(maxVal) : Number.POSITIVE_INFINITY;
+      var sizesStr = panel.querySelector('#'+pid+'-sizes').value || '';
+      var sizes = sizesStr.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+      var brand = (panel.querySelector('#'+pid+'-brand').value||'').toLowerCase();
+      applyFilters(sectionId, { min:min, max:max, sizes:sizes, brand:brand });
+    });
+  }
+
+  function run(){
+    TARGET_SECTIONS.forEach(rebuildHeaderToolbar);
+  }
+  document.addEventListener('DOMContentLoaded', run);
+  window.addEventListener('hashchange', run);
+  setTimeout(run, 400);
+  setTimeout(run, 1000);
+})();
+</script>
+
+<!-- Cart Drawer -->
+<div id="cart-drawer" aria-hidden="true">
+  <div id="cart-header">
+    <strong>Carrito</strong>
+    <button id="cart-close" aria-label="Cerrar">✕</button>
+  </div>
+  <div id="cart-items"></div>
+  <div id="cart-footer">
+    <div id="cart-total" style="margin-bottom:.5rem;font-weight:600">Total: $0</div>
+    <button id="cart-clear" class="cart-remove" style="border-color:#111;color:#111">Vaciar carrito</button>
+  </div>
+</div>
+
+
+<!-- Injected JS: cart logic -->
+<script>
+(function(){
+  // Utility: parse price from text "$1,299"
+  function parsePrice(text){
+    var m = (text||'').match(/([\d,.]+)/);
+    if(!m) return 0;
+    return parseFloat(m[1].replace(/\./g,'').replace(',', '.')) || 0;
+  }
+
+  // CART STATE in localStorage
+  var LS_KEY = 'sneakerzone_cart';
+  function loadCart(){ try{ return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }catch(_){ return []; } }
+  function saveCart(items){ localStorage.setItem(LS_KEY, JSON.stringify(items)); updateBadge(items.length); renderCart(); }
+  function addToCart(item){
+    var items = loadCart();
+    items.push(item);
+    saveCart(items);
+    openCart();
+  }
+  function removeFromCart(index){
+    var items = loadCart();
+    items.splice(index,1);
+    saveCart(items);
+  }
+  function clearCart(){
+    saveCart([]);
+  }
+
+  // Drawer UI
+  var drawer = null, itemsBox = null, totalBox = null;
+  function openCart(){ drawer && drawer.classList.add('open'); }
+  function closeCart(){ drawer && drawer.classList.remove('open'); }
+  function renderCart(){
+    if(!itemsBox) return;
+    var items = loadCart();
+    itemsBox.innerHTML = '';
+    if(!items.length){
+      itemsBox.innerHTML = '<div class="cart-empty">Tu carrito está vacío.</div>';
+      if(totalBox) totalBox.textContent = 'Total: $0';
+      return;
+    }
+    var total = 0;
+    items.forEach(function(it, idx){
+      total += it.price || 0;
+      var row = document.createElement('div');
+      row.className = 'cart-item';
+      row.innerHTML = ''
+        + '<img src="'+(it.image||'')+'" alt="'+(it.name||'')+'">'
+        + '<div><div style="font-weight:600">'+(it.name||'')+'</div>'
+        + '<div style="font-size:.85rem;color:#6b7280">'+(it.brand||'')+(it.size?(' · Talla '+it.size):'')+'</div>'
+        + '<div style="font-weight:600">$'+(it.price||0)+'</div></div>'
+        + '<button class="cart-remove" data-index="'+idx+'">Eliminar</button>';
+      itemsBox.appendChild(row);
+    });
+    if(totalBox) totalBox.textContent = 'Total: $' + total;
+  }
+
+  // Badge on existing bag/cart icon in header (if present)
+  function ensureBadge(){
+    var bag = document.querySelector('header [data-cart-icon], header .cart-icon, header [aria-label="Carrito"], header [title="Carrito"], header svg[aria-label="cart"]') || document.querySelector('header .relative a[href="#carrito"]');
+    if(!bag){
+      // fallback: attach to header right group
+      var hdr = document.querySelector('header .flex.items-center') || document.querySelector('header');
+      if(hdr){
+        var span = document.createElement('span');
+        span.textContent = '🛒';
+        span.style.cursor = 'pointer';
+        span.setAttribute('data-cart-icon','1');
+        hdr.appendChild(span);
+        bag = span;
+      }
+    }
+    if(!bag) return null;
+    var wrap = bag.parentElement || bag;
+    var badge = wrap.querySelector('.cart-badge');
+    if(!badge){
+      badge = document.createElement('span');
+      badge.className = 'cart-badge';
+      badge.textContent = '0';
+      wrap.style.position = 'relative';
+      wrap.appendChild(badge);
+    }
+    wrap.addEventListener('click', function(e){ e.preventDefault(); openCart(); });
+    return badge;
+  }
+  var badgeEl = null;
+  function updateBadge(n){
+    if(!badgeEl) badgeEl = ensureBadge();
+    if(badgeEl) badgeEl.textContent = String(n||0);
+  }
+
+  // Ensure every product card has an "Agregar al carrito" button and replace heart overlays
+  function ensureAddButtons(){
+    document.querySelectorAll('.product-card').forEach(function(card){
+      // remove heart overlay if exists
+      var heart = card.querySelector('.heart-btn, .favorite-btn, [aria-label="Agregar a favoritos"]');
+      if(heart && heart.parentNode) heart.parentNode.removeChild(heart);
+
+      // if overlay top-right exists, repurpose to cart icon
+      var overlay = card.querySelector('.absolute.top-4.right-4');
+      if(overlay && !overlay.querySelector('.add-to-cart-overlay')){
+        var btn = document.createElement('button');
+        btn.className = 'add-to-cart-overlay';
+        btn.title = 'Agregar al carrito';
+        btn.innerHTML = '🛒';
+        btn.style.border='1px solid #111'; btn.style.borderRadius='9999px'; btn.style.padding='6px 10px'; btn.style.background='#fff';
+        overlay.appendChild(btn);
+      }
+      // if no overlay, ensure inline button below WhatsApp
+      if(!card.querySelector('.add-to-cart')){
+        var inline = document.createElement('button');
+        inline.className = 'add-to-cart';
+        inline.textContent = 'Agregar al carrito';
+        var container = card.querySelector('.space-y-2') || card;
+        container.appendChild(inline);
+      }
+    });
+  }
+
+  // Handle size-btn behavior (toggle active)
+  document.addEventListener('click', function(e){
+    if(e.target && e.target.classList.contains('size-btn')){
+      var wrap = e.target.closest('.size-selector') || e.target.parentElement;
+      if(wrap){
+        wrap.querySelectorAll('.size-btn').forEach(function(b){ b.classList.remove('active'); });
+      }
+      e.target.classList.add('active');
+    }
+  });
+
+  // Handle add-to-cart clicks (overlay or inline)
+  document.addEventListener('click', function(e){
+    if(!(e.target && (e.target.classList.contains('add-to-cart') || e.target.classList.contains('add-to-cart-overlay')))) return;
+    var card = e.target.closest('.product-card');
+    if(!card) return;
+    var name = (card.querySelector('h3')||{}).textContent || 'Producto';
+    var brand = (card.getAttribute('data-brand')||'').trim();
+    var priceEl = card.querySelector('.font-medium.text-black');
+    var price = parsePrice(priceEl ? priceEl.textContent : '');
+    var img = (card.querySelector('img')||{}).getAttribute ? card.querySelector('img').getAttribute('src') : '';
+    var sizeBtn = card.querySelector('.size-btn.active');
+    var size = sizeBtn ? sizeBtn.getAttribute('data-size') || sizeBtn.textContent : '';
+
+    if(!size){
+      alert('Selecciona una talla antes de agregar al carrito.');
+      return;
+    }
+    addToCart({name:name, brand:brand, price:price, image:img, size:size});
+  });
+
+  // Drawer events
+  document.addEventListener('DOMContentLoaded', function(){
+    drawer = document.getElementById('cart-drawer');
+    itemsBox = document.getElementById('cart-items');
+    totalBox = document.getElementById('cart-total');
+    var closeBtn = document.getElementById('cart-close');
+    var clearBtn = document.getElementById('cart-clear');
+    if(closeBtn) closeBtn.addEventListener('click', closeCart);
+    if(clearBtn) clearBtn.addEventListener('click', function(){
+      if(confirm('¿Vaciar carrito?')) clearCart();
+    });
+    // remove buttons (delegated)
+    drawer.addEventListener('click', function(e){
+      if(e.target && e.target.classList.contains('cart-remove') && e.target.dataset.index){
+        var idx = parseInt(e.target.dataset.index,10);
+        if(!isNaN(idx) && confirm('¿Eliminar este producto del carrito?')){
+          removeFromCart(idx);
+        }
+      }
+    });
+    // First render
+    updateBadge(loadCart().length);
+    renderCart();
+    ensureAddButtons();
+    // Observe future product cards (e.g., when subes tenis)
+    var obs = new MutationObserver(function(){ ensureAddButtons(); });
+    obs.observe(document.body, {childList:true, subtree:true});
+  });
+})();
+</script>
+
+<!-- Edit Modal -->
+<div id="edit-modal" aria-hidden="true">
+  <div id="edit-box">
+    <h3>Editar producto</h3>
+    <div class="fields">
+      <label>Nombre<input id="edit-name"/></label>
+      <label>Marca<input id="edit-brand"/></label>
+      <label>Precio (solo número)<input id="edit-price" type="number" step="0.01"/></label>
+      <label>Tallas (separadas por coma)<input id="edit-sizes"/></label>
+    </div>
+    <div id="edit-actions">
+      <button id="edit-cancel" class="btn">Cancelar</button>
+      <button id="edit-save" class="btn primary">Guardar</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Injected JS: use existing bag icon; edit/delete with persistence -->
+<script>
+(function(){
+  // ---------- Helpers ----------
+  function parsePrice(text){
+    var m = (text||'').match(/([\d,.]+)/);
+    if(!m) return 0;
+    return parseFloat(m[1].replace(/\./g,'').replace(',', '.')) || 0;
+  }
+  function priceToText(n){
+    try{ return new Intl.NumberFormat('es-MX').format(n || 0); }catch(_){ return String(n||0); }
+  }
+  function slug(s){ return (s||'').toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9\-]/g,''); }
+
+  // ---------- Storage (edits + deletions) ----------
+  var LS_DEL = 'sneakerzone_hidden_cards';
+  var LS_EDIT = 'sneakerzone_edits';
+  function loadHidden(){ try{ return JSON.parse(localStorage.getItem(LS_DEL)||'[]'); }catch(_){ return []; } }
+  function saveHidden(arr){ localStorage.setItem(LS_DEL, JSON.stringify(arr||[])); }
+  function loadEdits(){ try{ return JSON.parse(localStorage.getItem(LS_EDIT)||'{}'); }catch(_){ return {}; } }
+  function saveEdits(obj){ localStorage.setItem(LS_EDIT, JSON.stringify(obj||{})); }
+
+  function cardId(card){
+    var name = (card.querySelector('h3')||{}).textContent || '';
+    var brand = (card.getAttribute('data-brand')||'').trim();
+    return slug(brand + '_' + name).slice(0,120) || ('card_' + Math.random().toString(36).slice(2,8));
+  }
+
+  function applyEditsAndHides(){
+    var hidden = loadHidden();
+    var edits = loadEdits();
+    document.querySelectorAll('.product-card').forEach(function(card){
+      var id = card.getAttribute('data-id');
+      if(!id){ id = cardId(card); card.setAttribute('data-id', id); }
+      if(hidden.indexOf(id) !== -1){
+        card.style.display = 'none';
+        return;
+      }
+      // apply edits
+      var e = edits[id];
+      if(e){
+        if(e.name){ var h3 = card.querySelector('h3'); if(h3) h3.textContent = e.name; }
+        if(e.brand){ card.setAttribute('data-brand', e.brand.toLowerCase()); var p = card.querySelector('.text-gray-500'); if(p) p.textContent = e.brand + ' - ' + (p.textContent.split(' - ').slice(1).join(' - ') || ''); }
+        if(typeof e.price === 'number'){ var priceEl = card.querySelector('.font-medium.text-black'); if(priceEl) priceEl.textContent = '$' + priceToText(e.price); }
+        if(e.sizes && Array.isArray(e.sizes)){
+          var container = card.querySelector('.size-selector .grid');
+          if(container){
+            container.innerHTML = e.sizes.map(function(t){ return '<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="'+t+'">'+t+'</button>'; }).join('');
+          }
+        }
+      }
+    });
+  }
+
+  // ---------- Add Edit/Delete buttons to each card ----------
+  function ensureCardActions(){
+    document.querySelectorAll('.product-card').forEach(function(card){
+      // give stable id
+      if(!card.getAttribute('data-id')) card.setAttribute('data-id', cardId(card));
+      if(card.querySelector('.product-actions')) return;
+      var bar = document.createElement('div');
+      bar.className = 'product-actions';
+      var eBtn = document.createElement('button');
+      eBtn.className = 'btn-edit'; eBtn.textContent = 'Editar';
+      var dBtn = document.createElement('button');
+      dBtn.className = 'btn-delete'; dBtn.textContent = 'Eliminar';
+      bar.appendChild(eBtn); bar.appendChild(dBtn);
+      var container = card.querySelector('.space-y-2') || card;
+      container.appendChild(bar);
+    });
+  }
+
+  // ---------- Edit modal wiring ----------
+  var editModal, editId, editName, editBrand, editPrice, editSizes;
+  function openEditFor(card){
+    var id = card.getAttribute('data-id') || cardId(card);
+    card.setAttribute('data-id', id);
+    editId = id;
+    editName.value = (card.querySelector('h3')||{}).textContent || '';
+    editBrand.value = (card.getAttribute('data-brand')||'').trim();
+    var priceEl = card.querySelector('.font-medium.text-black');
+    editPrice.value = priceEl ? parsePrice(priceEl.textContent) : 0;
+    // sizes from buttons
+    var sizes = Array.from(card.querySelectorAll('.size-btn')).map(function(b){ return (b.getAttribute('data-size')||b.textContent||'').trim(); }).filter(Boolean);
+    editSizes.value = sizes.join(', ');
+    editModal.classList.add('open');
+  }
+  function closeEdit(){ editModal.classList.remove('open'); editId = null; }
+
+  function saveEdit(){
+    if(!editId) return closeEdit();
+    var edits = loadEdits();
+    edits[editId] = {
+      name: editName.value.trim(),
+      brand: editBrand.value.trim(),
+      price: parseFloat(editPrice.value || '0'),
+      sizes: (editSizes.value || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean)
+    };
+    saveEdits(edits);
+    applyEditsAndHides();
+    closeEdit();
+  }
+
+  // ---------- Delete card ----------
+  function deleteCard(card){
+    var id = card.getAttribute('data-id') || cardId(card);
+    if(!confirm('¿Eliminar este producto de la vista?')) return;
+    var hidden = loadHidden();
+    if(hidden.indexOf(id) === -1) hidden.push(id);
+    saveHidden(hidden);
+    card.style.display = 'none';
+  }
+
+  // ---------- Replace BAG icon usage & remove hearts ----------
+  function wireHeaderBag(){
+    // Find the existing bag icon and use it to open the cart drawer
+    var bag = document.querySelector('header [data-cart-icon], header .cart-icon, header [aria-label="Carrito"], header [title="Carrito"], header .bag-icon, header .shopping-bag, header svg[aria-label="bag"]');
+    if(!bag){
+      // Some templates use the last icon link in the right cluster (after heart). Try a heuristic:
+      var rightCluster = document.querySelector('header .flex.items-center.justify-end, header .flex.items-center.gap-4, header .flex.items-center');
+      if(rightCluster){
+        var links = rightCluster.querySelectorAll('a,button');
+        if(links.length) bag = links[links.length-1];
+      }
+    }
+    if(bag){
+      // mark as cart icon for our existing cart code to attach badge and click
+      bag.setAttribute('data-cart-icon','1');
+    }
+    // remove any heart icon in header
+    var heart = document.querySelector('header .heart-btn, header [aria-label="Favoritos"], header [title="Favoritos"], header svg[aria-label="heart"]');
+    if(heart && heart.parentNode) heart.parentNode.removeChild(heart);
+  }
+
+  // ---------- Global events ----------
+  document.addEventListener('click', function(e){
+    // Edit
+    if(e.target && e.target.classList.contains('btn-edit')){
+      var card = e.target.closest('.product-card'); if(card) openEditFor(card);
+    }
+    // Delete
+    if(e.target && e.target.classList.contains('btn-delete')){
+      var card = e.target.closest('.product-card'); if(card) deleteCard(card);
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function(){
+    // Modal refs
+    editModal = document.getElementById('edit-modal');
+    editName = document.getElementById('edit-name');
+    editBrand = document.getElementById('edit-brand');
+    editPrice = document.getElementById('edit-price');
+    editSizes = document.getElementById('edit-sizes');
+    document.getElementById('edit-cancel').addEventListener('click', function(){ editModal.classList.remove('open'); });
+    document.getElementById('edit-save').addEventListener('click', saveEdit);
+
+    // Remove hearts and wire bag
+    wireHeaderBag();
+
+    // Apply persisted changes then ensure actions
+    applyEditsAndHides();
+    ensureCardActions();
+
+    // Observe future product cards (cuando subes tenis)
+    var obs = new MutationObserver(function(){
+      applyEditsAndHides();
+      ensureCardActions();
+    });
+    obs.observe(document.body, {childList:true, subtree:true});
+  });
+})();
+</script>
+
+<!-- Injected JS: remove heart; gate cart opening to bag click only -->
+<script>
+(function(){
+  function removeHeaderHearts(){
+    var sel = [
+      'header [class*="heart"]',
+      'header [title*="Favorit"]',
+      'header [aria-label*="Favorit"]',
+      'header a[href*="wish"]',
+      'header button[href*="wish"]',
+      'header svg[aria-label*="heart"]'
+    ];
+    try {
+      document.querySelectorAll(sel.join(',')).forEach(function(el){
+        if(el) el.remove();
+      });
+    } catch(e){ /* noop */ }
+  }
+
+  function findBag(){
+    var bag = document.querySelector('header [data-cart-icon], header .cart-icon, header [aria-label="Carrito"], header [title="Carrito"], header .shopping-bag, header .bag, header .bag-icon');
+    if(!bag){
+      // fallbacks: pick last icon-like link in header
+      var right = document.querySelector('header') || document;
+      var cands = right.querySelectorAll('a,button');
+      for (var i=cands.length-1; i>=0; i--){
+        var t = (cands[i].textContent||'').trim().toLowerCase();
+        var cls = (cands[i].className||'').toLowerCase();
+        if(cls.includes('bag') || cls.includes('cart')) { bag = cands[i]; break; }
+      }
+    }
+    if(bag) bag.setAttribute('data-cart-icon','1');
+    return bag;
+  }
+
+  // Gate: only allow opening the drawer when user clicked the bag
+  function gateCartOpen(){
+    var drawer = document.getElementById('cart-drawer');
+    if(!drawer) return;
+    window.__allowCartOpen = false;
+
+    // When hash changes / scripts try to open, we block unless allowed
+    var obs = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        if(m.attributeName === 'class'){
+          var isOpen = drawer.classList.contains('open');
+          if(isOpen && !window.__allowCartOpen){
+            // Immediately close if not allowed
+            drawer.classList.remove('open');
+          }
+        }
+      });
+    });
+    obs.observe(drawer, { attributes:true });
+
+    // Mark allowed window only when clicking bag
+    var bag = findBag();
+    if(bag){
+      bag.addEventListener('click', function(e){
+        window.__allowCartOpen = true;
+        // Reset permission shortly after, in case open animation is delayed
+        setTimeout(function(){ window.__allowCartOpen = false; }, 800);
+      }, { capture:true });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    try{ removeHeaderHearts(); }catch(_){}
+    try{ gateCartOpen(); }catch(_){}
+  });
+})();
+</script>
 </body>
 </html>
