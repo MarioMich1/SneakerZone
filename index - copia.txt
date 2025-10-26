@@ -57,208 +57,37 @@
           </div>
         </div>
         
-
-
-<!-- Botón para abrir el formulario -->
-<div class="text-center my-12">
-  </button>
-</div>
-
-<!-- Formulario emergente -->
-<div id="uploadForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-  <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
-    <h2 class="text-xl font-bold mb-4 text-center">Agregar Nuevo Tenis</h2>
-
-    <label class="block mb-2 text-sm font-medium">Nombre del producto:</label>
-    <input type="text" id="nombreTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. Air Max Revolution">
-
-    <label class="block mb-2 text-sm font-medium">Precio:</label>
-    <input type="number" id="precioTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 750">
-
-    <label class="block mb-2 text-sm font-medium">Categoría:</label>
-    <select id="categoria" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
-      <option value="hombre">Hombre</option>
-      <option value="mujer">Mujer</option>
-      <option value="niños">Niños</option>
-    </select>
-
-    <label class="block mb-2 text-sm font-medium">Marca:</label>
-    <select id="marca" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
-      <option value="nike">Nike</option>
-      <option value="adidas">Adidas</option>
-      <option value="puma">Puma</option>
-      <option value="reebok">Reebok</option>
-      <option value="newbalance">New Balance</option>
-      <option value="alo">Alo</option>
-      <option value="gucicloudtec">GuciCloudtec</option>
-    </select>
-
-    <label class="block mb-2 text-sm font-medium">Tallas disponibles (separadas por coma):</label>
-    <input type="text" id="tallasTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 7,8,9,10,11">
-
-    <label class="block mb-2 text-sm font-medium">Foto del producto:</label>
-    <input type="file" id="fotoTenis" accept="image/*" class="w-full mb-4">
-
-    <button onclick="subirTenis()" class="nike-button bg-green-600 text-white w-full py-2 hover:bg-green-700 transition">
-      Subir Tenis
-    </button>
-    <button onclick="toggleUploadForm()" class="mt-3 text-sm text-gray-500 hover:underline block text-center">
-      Cancelar
-    </button>
-  </div>
-</div>
-
-    <!-- Prueba de cargado de tenis-->
-<!-- Botón para abrir el formulario -->
-<div class="text-center my-12">
-  <button onclick="toggleUploadForm()" class="nike-button bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition">
-    Cargar Tenis
-  </button>
-</div>
-
-<!-- Formulario emergente -->
-<div id="uploadForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-  <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
-    <h2 class="text-xl font-bold mb-4 text-center">Agregar Nuevo Tenis</h2>
-
-    <label class="block mb-2 text-sm font-medium">Nombre del producto:</label>
-    <input type="text" id="nombreTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. Air Max Revolution">
-
-    <label class="block mb-2 text-sm font-medium">Precio:</label>
-    <input type="number" id="precioTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 750">
-
-    <label class="block mb-2 text-sm font-medium">Categoría:</label>
-    <select id="categoria" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
-      <option value="hombre">Hombre</option>
-      <option value="mujer">Mujer</option>
-      <option value="ninos">Niños</option>
-    </select>
-
-    <label class="block mb-2 text-sm font-medium">Marca:</label>
-    <select id="marca" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
-      <option value="nike">Nike</option>
-      <option value="adidas">Adidas</option>
-      <option value="puma">Puma</option>
-      <option value="reebok">Reebok</option>
-      <option value="newbalance">New Balance</option>
-      <option value="alo">Alo</option>
-      <option value="gucicloudtec">GuciCloudtec</option>
-    </select>
-
-    <label class="block mb-2 text-sm font-medium">Tallas disponibles (separadas por coma):</label>
-    <input type="text" id="tallasTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 7,8,9,10,11">
-
-    <label class="block mb-2 text-sm font-medium">Foto del producto:</label>
-    <input type="file" id="fotoTenis" accept="image/*" class="w-full mb-4">
-
-    <button onclick="subirTenis()" class="nike-button bg-green-600 text-white w-full py-2 hover:bg-green-700 transition">
-      Subir Tenis
-    </button>
-    <button onclick="toggleUploadForm()" class="mt-3 text-sm text-gray-500 hover:underline block text-center">
-      Cancelar
-    </button>
-  </div>
-</div>
-
-<!-- Script para insertar el producto en la sección correspondiente -->
-<script>
-function toggleUploadForm() {
-  document.getElementById('uploadForm').classList.toggle('hidden');
-}
-
-function subirTenis() {
-  const nombre = document.getElementById('nombreTenis').value;
-  const precio = document.getElementById('precioTenis').value;
-  const categoria = document.getElementById('categoria').value;
-  const marca = document.getElementById('marca').value;
-  const tallas = document.getElementById('tallasTenis').value.split(',');
-  const foto = document.getElementById('fotoTenis').files[0];
-
-  if (!nombre || !precio || !tallas || !foto) {
-    alert('Por favor completa todos los campos y selecciona una imagen.');
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const imageUrl = e.target.result;
-
-    const card = document.createElement('div');
-    card.className = `product-card nike-hover group cursor-pointer`;
-    card.setAttribute('data-brand', marca.toLowerCase());
-
-    card.innerHTML = `
-      <div class="relative overflow-hidden bg-gray-100 rounded-lg mb-4">
-        <div class="product-image aspect-square flex items-center justify-center p-4">
-          <img src="${imageUrl}" alt="${nombre}" class="w-full h-full object-cover rounded-lg">
-        </div>
-      </div>
-      <div class="space-y-2">
-        <h3 class="font-medium text-black">${nombre}</h3>
-        <p class="text-gray-500 text-sm">${marca} - Tenis para ${categoria.charAt(0).toUpperCase() + categoria.slice(1)}</p>
-        <p class="font-medium text-black">$${precio}</p>
-        <div class="size-selector mt-4">
-          <p class="text-sm text-gray-600 mb-2">Talla:</p>
-          <div class="grid grid-cols-4 gap-2 mb-4">
-            ${tallas.map(t => `<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="${t.trim()}">${t.trim()}</button>`).join('')}
-          </div>
-        </div>
-        <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 hover:bg-green-700" disabled>
-          Comprar por WhatsApp
-        </button>
-      </div>
-    `;
-
-    const idMap = {
-      hombre: 'men-catalog',
-      mujer: 'women-catalog',
-      ninos: 'ninos-page'
-    };
-
-    const contenedor = document.querySelector(`#${idMap[categoria]} .grid`);
-    if (contenedor) {
-      contenedor.appendChild(card);
-      alert(`Tenis "${nombre}" cargado correctamente en la categoría ${categoria} (${marca}) con precio $${precio} y tallas: ${tallas.join(', ')}`);
-    } else {
-      alert('No se encontró la sección correspondiente. Verifica que exista el contenedor con id "' + idMap[categoria] + '".');
-    }
-
-    toggleUploadForm();
-  };
-
-  reader.readAsDataURL(foto);
-}
-</script>
-    <!-- Prueba de cargado de tenis-->
-        
         <!-- Navigation -->
         <nav class="hidden md:flex space-x-8">
           <a href="#" onclick="showPage('nuevos-lanzamientos')" class="text-black hover:text-gray-600 font-medium text-sm tracking-wide transition-colors">Nuevos Lanzamientos</a>
-          <button class="menu-toggle text-black hover:text-gray-600 font-medium text-sm tracking-wide transition-colors" data-target="submenu-hombre">Hombre</button>
-    <div id="submenu-hombre" class="submenu absolute mt-2 bg-white border border-gray-200 rounded-lg shadow-lg hidden">
-      <a href="#" onclick="showBrandPage('nike')" class="block px-4 py-2 text-sm hover:bg-gray-100">Nike</a>
-      <a href="#" onclick="showBrandPage('adidas')" class="block px-4 py-2 text-sm hover:bg-gray-100">Adidas</a>
-      <a href="#" onclick="showBrandPage('newbalance')" class="block px-4 py-2 text-sm hover:bg-gray-100">New Balance</a>
-      <a href="#" onclick="showBrandPage('puma')" class="block px-4 py-2 text-sm hover:bg-gray-100">Puma</a>
-      <a href="#" onclick="showBrandPage('reebok')" class="block px-4 py-2 text-sm hover:bg-gray-100">Reebok</a>
-    </div>
-          <button class="menu-toggle text-black hover:text-gray-600 font-medium text-sm tracking-wide transition-colors" data-target="submenu-mujer">Mujer</button>
-    <div id="submenu-mujer" class="submenu absolute mt-2 bg-white border border-gray-200 rounded-lg shadow-lg hidden">
-      <a href="#" onclick="showBrandPage('nike')" class="block px-4 py-2 text-sm hover:bg-gray-100">Nike</a>
-      <a href="#" onclick="showBrandPage('adidas')" class="block px-4 py-2 text-sm hover:bg-gray-100">Adidas</a>
-      <a href="#" onclick="showBrandPage('alo')" class="block px-4 py-2 text-sm hover:bg-gray-100">Alo</a>
-      <a href="#" onclick="showBrandPage('puma')" class="block px-4 py-2 text-sm hover:bg-gray-100">Puma</a>
-      <a href="#" onclick="showBrandPage('reebok')" class="block px-4 py-2 text-sm hover:bg-gray-100">Reebok</a>
-    </div>
-          <button class="menu-toggle text-black hover:text-gray-600 font-medium text-sm tracking-wide transition-colors" data-target="submenu-ninos">Niños</button>
-    <div id="submenu-ninos" class="submenu absolute mt-2 bg-white border border-gray-200 rounded-lg shadow-lg hidden">
-      <a href="#" onclick="showBrandPage('nike')" class="block px-4 py-2 text-sm hover:bg-gray-100">Nike</a>
-      <a href="#" onclick="showBrandPage('adidas')" class="block px-4 py-2 text-sm hover:bg-gray-100">Adidas</a>
-      <a href="#" onclick="showBrandPage('newbalance')" class="block px-4 py-2 text-sm hover:bg-gray-100">New Balance</a>
-      <a href="#" onclick="showBrandPage('puma')" class="block px-4 py-2 text-sm hover:bg-gray-100">Puma</a>
-    </div>
+          <a href="#" onclick="showPage('hombre')" class="text-black hover:text-gray-600 font-medium text-sm tracking-wide transition-colors">Hombre</a>
+          <a href="#" onclick="showPage('mujer')" class="text-black hover:text-gray-600 font-medium text-sm tracking-wide transition-colors">Mujer</a>
+          <a href="#" onclick="showPage('ninos')" class="text-black hover:text-gray-600 font-medium text-sm tracking-wide transition-colors">Niños</a>
           
-          
+          <!-- Brands Dropdown -->
+          <div class="relative group">
+            <button class="text-black hover:text-gray-600 font-medium text-sm tracking-wide transition-colors flex items-center">
+              Marcas
+              <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <!-- Dropdown Menu -->
+            <div class="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="py-2">
+                <a href="#" onclick="showBrandPage('nike')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Nike</a>
+                <a href="#" onclick="showBrandPage('adidas')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Adidas</a>
+                <a href="#" onclick="showBrandPage('newbalance')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">New Balance</a>
+                <a href="#" onclick="showBrandPage('alo')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Alo</a>
+                <a href="#" onclick="showBrandPage('puma')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Puma</a>
+                <a href="#" onclick="showBrandPage('gucicloudtec')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">GuciCloudtec</a>
+                <a href="#" onclick="showBrandPage('murphy')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Murphy</a>
+                <a href="#" onclick="showBrandPage('reebok')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Reebok</a>
+                <a href="#" onclick="showBrandPage('tommi')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">Tommi</a>
+              </div>
+            </div>
+          </div>
           
           <a href="#" onclick="showPage('ofertas')" class="text-black hover:text-gray-600 font-medium text-sm tracking-wide transition-colors">Ofertas</a>
         </nav>
@@ -432,7 +261,44 @@ function subirTenis() {
           </div>
         </div>
 
-        <!-- Product 4 - Reebok -->
+        <!-- Product 4 - New Balance -->
+        <div class="product-card nike-hover group cursor-pointer" data-brand="newbalance">
+          <div class="relative overflow-hidden bg-green-50 rounded-lg mb-4">
+            <div class="product-image aspect-square flex items-center justify-center p-4">
+              <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&crop=center" alt="Fresh Foam Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
+            </div>
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-medium text-black">Fresh Foam Elite</h3>
+            <p class="text-gray-500 text-sm">New Balance - Tenis para Hombre</p>
+            <p class="font-medium text-black">$890</p>
+            <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <p class="text-sm text-gray-600 mb-2">Talla:</p>
+              <div class="grid grid-cols-4 gap-2 mb-4">
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="7">7</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="8">8</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="9">9</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="10">10</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="11">11</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="12">12</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="13">13</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="14">14</button>
+              </div>
+            </div>
+            <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
+              Comprar por WhatsApp
+            </button>
+          </div>
+        </div>
+
+        <!-- Product 5 - Reebok -->
         <div class="product-card nike-hover group cursor-pointer" data-brand="reebok">
           <div class="relative overflow-hidden bg-red-50 rounded-lg mb-4">
             <div class="product-image aspect-square flex items-center justify-center p-4">
@@ -469,7 +335,42 @@ function subirTenis() {
           </div>
         </div>
 
-       
+        <!-- Product 6 - GuciCloudtec -->
+        <div class="product-card nike-hover group cursor-pointer" data-brand="gucicloudtec">
+          <div class="relative overflow-hidden bg-purple-50 rounded-lg mb-4">
+            <div class="product-image aspect-square flex items-center justify-center p-4">
+              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&crop=center" alt="Cloud Runner Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
+            </div>
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-medium text-black">Cloud Runner Elite</h3>
+            <p class="text-gray-500 text-sm">GuciCloudtec - Tenis Unisex</p>
+            <p class="font-medium text-black">$1,250</p>
+            <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <p class="text-sm text-gray-600 mb-2">Talla:</p>
+              <div class="grid grid-cols-4 gap-2 mb-4">
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="7">7</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="8">8</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="9">9</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="10">10</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="11">11</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="12">12</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="13">13</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="14">14</button>
+              </div>
+            </div>
+            <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
+              Comprar por WhatsApp
+            </button>
+          </div>
+        </div>
         
       </div>
     </div>
@@ -479,6 +380,143 @@ function subirTenis() {
   <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Men's Category -->
+        <div class="relative overflow-hidden rounded-lg nike-hover cursor-pointer group" onclick="showMenCatalog()">
+          <div class="bg-gradient-to-br from-black to-gray-800 h-96 flex items-center justify-center">
+            <div class="text-center text-white">
+              <h3 class="text-4xl font-bold mb-4">HOMBRE</h3>
+              <p class="text-lg mb-6 opacity-90">Rendimiento sin límites</p>
+              <button class="nike-button border-2 border-white text-white px-8 py-3 hover:bg-white hover:text-black transition-colors">
+                Comprar Hombre
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Women's Category -->
+        <div class="relative overflow-hidden rounded-lg nike-hover cursor-pointer group" onclick="showWomenCatalog()">
+          <div class="bg-gradient-to-br from-blue-600 to-blue-800 h-96 flex items-center justify-center">
+            <div class="text-center text-white">
+              <h3 class="text-4xl font-bold mb-4">MUJER</h3>
+              <p class="text-lg mb-6 opacity-90">Estilo y comodidad</p>
+              <button class="nike-button border-2 border-white text-white px-8 py-3 hover:bg-white hover:text-blue-600 transition-colors">
+                Comprar Mujer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 4 - New Balance -->
+        <div class="product-card nike-hover group cursor-pointer" data-brand="newbalance">
+          <div class="relative overflow-hidden bg-green-50 rounded-lg mb-4">
+            <div class="product-image aspect-square flex items-center justify-center p-4">
+              <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&crop=center" alt="Fresh Foam Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
+            </div>
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-medium text-black">Fresh Foam Elite</h3>
+            <p class="text-gray-500 text-sm">New Balance - Tenis para Hombre</p>
+            <p class="font-medium text-black">$890</p>
+            <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <p class="text-sm text-gray-600 mb-2">Talla:</p>
+              <div class="grid grid-cols-4 gap-2 mb-4">
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="7">7</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="8">8</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="9">9</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="10">10</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="11">11</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="12">12</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="13">13</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="14">14</button>
+              </div>
+            </div>
+            <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
+              Comprar por WhatsApp
+            </button>
+          </div>
+        </div>
+
+        <!-- Product 5 - Reebok -->
+        <div class="product-card nike-hover group cursor-pointer" data-brand="reebok">
+          <div class="relative overflow-hidden bg-red-50 rounded-lg mb-4">
+            <div class="product-image aspect-square flex items-center justify-center p-4">
+              <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=400&fit=crop&crop=center" alt="Classic Leather Pro" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
+            </div>
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-medium text-black">Classic Leather Pro</h3>
+            <p class="text-gray-500 text-sm">Reebok - Tenis para Mujer</p>
+            <p class="font-medium text-black">$720</p>
+            <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <p class="text-sm text-gray-600 mb-2">Talla:</p>
+              <div class="grid grid-cols-4 gap-2 mb-4">
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="5">5</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="6">6</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="7">7</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="8">8</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="9">9</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="10">10</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="11">11</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="12">12</button>
+              </div>
+            </div>
+            <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
+              Comprar por WhatsApp
+            </button>
+          </div>
+        </div>
+
+        <!-- Product 6 - GuciCloudtec -->
+        <div class="product-card nike-hover group cursor-pointer" data-brand="gucicloudtec">
+          <div class="relative overflow-hidden bg-purple-50 rounded-lg mb-4">
+            <div class="product-image aspect-square flex items-center justify-center p-4">
+              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&crop=center" alt="Cloud Runner Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
+            </div>
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-medium text-black">Cloud Runner Elite</h3>
+            <p class="text-gray-500 text-sm">GuciCloudtec - Tenis Unisex</p>
+            <p class="font-medium text-black">$1,250</p>
+            <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <p class="text-sm text-gray-600 mb-2">Talla:</p>
+              <div class="grid grid-cols-4 gap-2 mb-4">
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="7">7</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="8">8</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="9">9</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="10">10</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="11">11</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="12">12</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="13">13</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="14">14</button>
+              </div>
+            </div>
+            <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
+              Comprar por WhatsApp
+            </button>
+          </div>
+        </div>
         
       </div>
     </div>
@@ -1572,31 +1610,5 @@ function subirTenis() {
     });
   </script>
 
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99471be0e0616dba',t:'MTc2MTQ1MTg3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-<script>
-// Script para menús de clic
-document.addEventListener('DOMContentLoaded', function() {
-  const menus = document.querySelectorAll('.menu-toggle');
-  const openMenus = new Set();
-
-  menus.forEach(menu => {
-    const targetId = menu.dataset.target;
-    const targetMenu = document.getElementById(targetId);
-
-    menu.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const isVisible = targetMenu.classList.contains('block');
-      document.querySelectorAll('.submenu').forEach(m => m.classList.add('hidden'));
-      if (!isVisible) targetMenu.classList.remove('hidden');
-      else targetMenu.classList.add('hidden');
-    });
-  });
-
-  document.addEventListener('click', () => {
-    document.querySelectorAll('.submenu').forEach(m => m.classList.add('hidden'));
-  });
-});
-</script>
-
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99471be0e0616dba',t:'MTc2MTQ1MTg3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

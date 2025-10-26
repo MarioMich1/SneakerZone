@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SneakerZone - Just Do It</title>
+  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .nike-button { border-radius: 30px; font-weight: 500; transition: all 0.18s ease; }
+    .product-image { transition: transform 0.45s ease; }
+    .product-card:hover .product-image { transform: scale(1.04); }
+    .fade-enter { opacity: 0; transform: translateY(6px); }
+    .fade-enter-active { opacity: 1; transform: translateY(0); transition: all 300ms ease; }
+    .fade-exit { opacity: 1; transform: translateY(0); }
+    .fade-exit-active { opacity: 0; transform: translateY(6px); transition: all 240ms ease; }
+  </style>
+</head>
+<body class="text-black h-full bg-white">
+
+  <!-- Header -->
+  <header class="bg-white sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <div class="text-2xl font-black tracking-tight cursor-pointer" onclick="showHomePage()">
+            <span class="text-black">SNEAKER</span><span class="text-blue-600">ZONE</span>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-6 items-center">
+          <a href="#" onclick="showPage('nuevos-lanzamientos')" class="text-black hover:text-gray-600 font-medium text-sm">Nuevos Lanzamientos</a>
+          <button onclick="toggleCategoryMenu('hombre')" class="text-black hover:text-gray-600 font-medium text-sm">Hombre</button>
+          <button onclick="toggleCategoryMenu('mujer')" class="text-black hover:text-gray-600 font-medium text-sm">Mujer</button>
+          <button onclick="toggleCategoryMenu('ninos')" class="text-black hover:text-gray-600 font-medium text-sm">Niños</button>
+          <a href="#" onclick="showPage('ofertas')" class="text-black hover:text-gray-600 font-medium text-sm">Ofertas</a>
+        </nav>
+
+        <!-- Right side -->
+        <div class="flex items-center space-x-4">
+          <button class="p-2 hover:bg-gray-100 rounded-full transition-colors" title="Buscar">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </button>
+          <button class="p-2 hover:bg-gray-100 rounded-full transition-colors" title="Favoritos">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </button>
+          <button class="p-2 hover:bg-gray-100 rounded-full transition-colors relative" title="Carrito">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+            </svg>
+            <span id="cart-counter" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-xs font-medium">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative bg-gray-50 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+      <div class="text-center">
+        <h1 class="text-6xl lg:text-7xl font-extrabold mb-4">JUST DO IT</h1>
+        <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">Encuentra tu grandeza con la nueva colección de tenis premium. Diseñados para el rendimiento, creados para el estilo.</p>
+        <div class="flex justify-center gap-4">
+          <button onclick="showPage('productos')" class="nike-button bg-black text-white px-6 py-3">Comprar Ahora</button>
+          <button onclick="showPage('productos')" class="nike-button border-2 border-black text-black px-6 py-3">Explorar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Brand Menus (hidden panels under header on small open) -->
+  <div id="category-menus" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 hidden md:block">
+    <div id="hombre-menu" class="hidden py-3">
+      <div class="flex gap-3">
+        <button class="nike-button bg-black text-white px-4 py-2" onclick="filterBy('hombre','nike')">Nike</button>
+        <button class="nike-button bg-gray-200 text-black px-4 py-2" onclick="filterBy('hombre','adidas')">Adidas</button>
+        <button class="nike-button bg-gray-200 text-black px-4 py-2" onclick="filterBy('hombre','newbalance')">New Balance</button>
+      </div>
+    </div>
+    <div id="mujer-menu" class="hidden py-3">
+      <div class="flex gap-3">
+        <button class="nike-button bg-black text-white px-4 py-2" onclick="filterBy('mujer','nike')">Nike</button>
+        <button class="nike-button bg-gray-200 text-black px-4 py-2" onclick="filterBy('mujer','adidas')">Adidas</button>
+        <button class="nike-button bg-gray-200 text-black px-4 py-2" onclick="filterBy('mujer','puma')">Puma</button>
+      </div>
+    </div>
+    <div id="ninos-menu" class="hidden py-3">
+      <div class="flex gap-3">
+        <button class="nike-button bg-black text-white px-4 py-2" onclick="filterBy('ninos','nike')">Nike</button>
+        <button class="nike-button bg-gray-200 text-black px-4 py-2" onclick="filterBy('ninos','adidas')">Adidas</button>
+        <button class="nike-button bg-gray-200 text-black px-4 py-2" onclick="filterBy('ninos','puma')">Puma</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products Grid (main catalog) -->
+  <main id="main-content" class="py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-8 flex items-center justify-between">
+        <h2 id="products-title" class="text-2xl font-medium">Productos Destacados</h2>
+        <div class="flex items-center gap-2">
+          <span class="text-sm text-gray-500">Filtro activo:</span>
+          <div id="active-filter" class="text-sm font-medium text-black">Todos</div>
+        </div>
+      </div>
+
+      <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- 2 Hombre -->
+        <article class="product-card bg-white p-4 rounded-lg shadow-sm" data-category="hombre" data-brand="nike">
+          <div class="relative overflow-hidden rounded-md">
+            <img class="product-image w-full h-56 object-cover rounded-md" src="https://i.imgur.com/FiYwjBf.jpeg" alt="Air Max Revolution">
+          </div>
+          <div class="mt-3">
+            <h3 class="font-semibold text-lg">Air Max Revolution</h3>
+            <p class="text-sm text-gray-500">Nike · Hombre</p>
+            <div class="mt-2 flex items-center justify-between">
+              <div class="font-medium">$750</div>
+              <div>
+                <button class="nike-button bg-green-600 text-white px-3 py-2 text-sm whatsapp-btn" data-name="Air Max Revolution" data-category="hombre" data-brand="nike">WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card bg-white p-4 rounded-lg shadow-sm" data-category="hombre" data-brand="adidas">
+          <div class="relative overflow-hidden rounded-md">
+            <img class="product-image w-full h-56 object-cover rounded-md" src="https://i.imgur.com/cDBsI1q.jpeg" alt="Urban Runner Pro - Hombre">
+          </div>
+          <div class="mt-3">
+            <h3 class="font-semibold text-lg">Urban Runner Pro</h3>
+            <p class="text-sm text-gray-500">Adidas · Hombre</p>
+            <div class="mt-2 flex items-center justify-between">
+              <div class="font-medium">$820</div>
+              <div>
+                <button class="nike-button bg-green-600 text-white px-3 py-2 text-sm whatsapp-btn" data-name="Urban Runner Pro" data-category="hombre" data-brand="adidas">WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2 Mujer -->
+        <article class="product-card bg-white p-4 rounded-lg shadow-sm" data-category="mujer" data-brand="nike">
+          <div class="relative overflow-hidden rounded-md">
+            <img class="product-image w-full h-56 object-cover rounded-md" src="https://i.imgur.com/3xPCiP0.jpeg" alt="Air Zoom Femme">
+          </div>
+          <div class="mt-3">
+            <h3 class="font-semibold text-lg">Air Zoom Femme</h3>
+            <p class="text-sm text-gray-500">Nike · Mujer</p>
+            <div class="mt-2 flex items-center justify-between">
+              <div class="font-medium">$630</div>
+              <div>
+                <button class="nike-button bg-green-600 text-white px-3 py-2 text-sm whatsapp-btn" data-name="Air Zoom Femme" data-category="mujer" data-brand="nike">WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card bg-white p-4 rounded-lg shadow-sm" data-category="mujer" data-brand="puma">
+          <div class="relative overflow-hidden rounded-md">
+            <img class="product-image w-full h-56 object-cover rounded-md" src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&h=800&fit=crop&crop=center" alt="Classic Femme">
+          </div>
+          <div class="mt-3">
+            <h3 class="font-semibold text-lg">Classic Femme</h3>
+            <p class="text-sm text-gray-500">Puma · Mujer</p>
+            <div class="mt-2 flex items-center justify-between">
+              <div class="font-medium">$720</div>
+              <div>
+                <button class="nike-button bg-green-600 text-white px-3 py-2 text-sm whatsapp-btn" data-name="Classic Femme" data-category="mujer" data-brand="puma">WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2 Niños -->
+        <article class="product-card bg-white p-4 rounded-lg shadow-sm" data-category="ninos" data-brand="nike">
+          <div class="relative overflow-hidden rounded-md">
+            <img class="product-image w-full h-56 object-cover rounded-md" src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&h=800&fit=crop&crop=center" alt="Mini Runner">
+          </div>
+          <div class="mt-3">
+            <h3 class="font-semibold text-lg">Mini Runner</h3>
+            <p class="text-sm text-gray-500">Nike · Niños</p>
+            <div class="mt-2 flex items-center justify-between">
+              <div class="font-medium">$450</div>
+              <div>
+                <button class="nike-button bg-green-600 text-white px-3 py-2 text-sm whatsapp-btn" data-name="Mini Runner" data-category="ninos" data-brand="nike">WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card bg-white p-4 rounded-lg shadow-sm" data-category="ninos" data-brand="adidas">
+          <div class="relative overflow-hidden rounded-md">
+            <img class="product-image w-full h-56 object-cover rounded-md" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=800&fit=crop&crop=center" alt="Kid Sprint">
+          </div>
+          <div class="mt-3">
+            <h3 class="font-semibold text-lg">Kid Sprint</h3>
+            <p class="text-sm text-gray-500">Adidas · Niños</p>
+            <div class="mt-2 flex items-center justify-between">
+              <div class="font-medium">$420</div>
+              <div>
+                <button class="nike-button bg-green-600 text-white px-3 py-2 text-sm whatsapp-btn" data-name="Kid Sprint" data-category="ninos" data-brand="adidas">WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600">
+      © <span id="year"></span> SneakerZone · Todos los derechos reservados
+    </div>
+  </footer>
+
+<script>
+  // Configuration
+  const WHATSAPP_NUMBER = "5213325503778"; // número enviado por el usuario
+  // Helpers to show/hide pages
+  function showHomePage() {
+    document.getElementById('main-content').scrollIntoView({behavior:'smooth'});
+    // reset filter
+    resetFilter();
+  }
+  function showPage(page) {
+    // For this simplified single-file, just scroll to main products or other sections
+    if (page === 'nuevos-lanzamientos') {
+      // Could implement a separate section; for now scroll to main
+      document.getElementById('products-grid').scrollIntoView({behavior:'smooth'});
+    } else {
+      document.getElementById('products-grid').scrollIntoView({behavior:'smooth'});
+    }
+  }
+
+  // Category menu toggles
+  function toggleCategoryMenu(cat) {
+    const menubar = document.getElementById('category-menus');
+    const menus = ['hombre-menu','mujer-menu','ninos-menu'];
+    menus.forEach(id => document.getElementById(id).classList.add('hidden'));
+    const el = document.getElementById(cat + '-menu');
+    if (!el) return;
+    el.classList.remove('hidden');
+    // smooth scroll to menus
+    menubar.classList.remove('hidden');
+    menubar.scrollIntoView({behavior:'smooth'});
+  }
+
+  // Filtering logic
+  let activeCategory = null;
+  let activeBrand = null;
+  const grid = document.getElementById('products-grid');
+  const items = Array.from(document.querySelectorAll('.product-card'));
+  const activeFilterElem = document.getElementById('active-filter');
+
+  function filterBy(category, brand) {
+    activeCategory = category;
+    activeBrand = brand;
+    activeFilterElem.textContent = `${capitalize(category)} · ${capitalize(brand)}`;
+    items.forEach(item => {
+      const itemCat = item.getAttribute('data-category');
+      const itemBrand = item.getAttribute('data-brand');
+      if (itemCat === category && itemBrand === brand) {
+        showItem(item);
+      } else {
+        hideItem(item);
+      }
+    });
+    // close menus visually
+    // small timeout to keep UX smooth
+    setTimeout(()=> {
+      // collapse menus (for desktop)
+      // keep category-menus visible but hide inner
+      const menus = ['hombre-menu','mujer-menu','ninos-menu'];
+      menus.forEach(id => document.getElementById(id).classList.add('hidden'));
+    }, 250);
+    document.getElementById('products-grid').scrollIntoView({behavior:'smooth'});
+  }
+
+  function resetFilter() {
+    activeCategory = null;
+    activeBrand = null;
+    activeFilterElem.textContent = 'Todos';
+    items.forEach(showItem);
+  }
+
+  function showItem(el) {
+    el.style.display = '';
+    el.classList.remove('fade-exit-active','fade-exit');
+    el.classList.add('fade-enter');
+    requestAnimationFrame(()=> {
+      el.classList.add('fade-enter-active');
+      el.classList.remove('fade-enter');
+    });
+  }
+
+  function hideItem(el) {
+    el.classList.remove('fade-enter-active','fade-enter');
+    el.classList.add('fade-exit');
+    requestAnimationFrame(()=> {
+      el.classList.add('fade-exit-active');
+      el.classList.remove('fade-exit');
+      // after animation hide for accessibility
+      setTimeout(()=> el.style.display = 'none', 260);
+    });
+  }
+
+  function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  // WhatsApp button handler: builds message and opens wa.me
+  function initWhatsAppButtons() {
+    const waButtons = Array.from(document.querySelectorAll('.whatsapp-btn'));
+    waButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const name = btn.dataset.name || 'producto';
+        const category = btn.dataset.category || 'categoria';
+        const brand = btn.dataset.brand || 'marca';
+        // Optional: could collect selected size if you add a size selector later
+        const message = `Hola 👋, me interesa el producto "${name}" de la categoría ${capitalize(category)} y marca ${capitalize(brand)}. ¿Está disponible?`;
+        const url = `https://wa.me/${WHATSAPP_NUMBER}?text=` + encodeURIComponent(message);
+        window.open(url, '_blank');
+      });
+    });
+  }
+
+  // Init
+  document.getElementById('year').textContent = new Date().getFullYear();
+  initWhatsAppButtons();
+
+  // Accessibility: close category menus if clicked outside
+  document.addEventListener('click', function(e){
+    const menus = document.getElementById('category-menus');
+    if (!menus) return;
+    if (!menus.contains(e.target) && !e.target.closest('nav')) {
+      // hide inner menus
+      ['hombre-menu','mujer-menu','ninos-menu'].forEach(id => document.getElementById(id).classList.add('hidden'));
+    }
+  });
+</script>
+
+</body>
+</html>

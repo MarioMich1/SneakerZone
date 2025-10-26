@@ -1,0 +1,5 @@
+Actualizar los datos en GitHub
+
+git add .
+git commit -m "Actualización del sitio"
+git push
