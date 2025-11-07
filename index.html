@@ -7,6 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+
+<script src="sneakerzone-online-loader.js"></script>
+
     body {
       box-sizing: border-box;
       font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -259,6 +262,38 @@
           <div class="relative overflow-hidden bg-gray-50 rounded-lg mb-4">
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://i.imgur.com/FiYwjBf.jpeg" alt="Air Max Revolution" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
+            </div>
+            
+          </div>
+          <div class="space-y-2">
+            <h3 class="font-medium text-black">Air Max Revolution</h3>
+            <p class="text-gray-500 text-sm">Nike - Tenis para Hombre</p>
+            <p class="font-medium text-black">$750</p>
+            <!-- Size selector -->
+            <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <p class="text-sm text-gray-600 mb-2">Talla:</p>
+              <div class="grid grid-cols-4 gap-2 mb-4">
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="7">7</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="8">8</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="9">9</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="10">10</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="11">11</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="12">12</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="13">13</button>
+                <button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="14">14</button>
+              </div>
+            </div>
+            <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
+              Comprar por WhatsApp
+            </button>
+          </div>
+        </div>
+
+        <!-- Product 1.1 -->
+        <div class="product-card nike-hover group cursor-pointer" data-brand="nike">
+          <div class="relative overflow-hidden bg-gray-50 rounded-lg mb-4">
+            <div class="product-image aspect-square flex items-center justify-center p-4">
+              <img src="assets/Img/Chanel/Chanel_Mujer_Sandalias_Blancas_380_26.jpg" alt="Air Max Revolution" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
             
           </div>
@@ -1022,6 +1057,7 @@
       </div>
     </div>
   </section>
+
 
   <!-- Newsletter -->
   <section class="bg-black text-white py-20">
