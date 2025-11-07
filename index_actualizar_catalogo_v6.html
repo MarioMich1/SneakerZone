@@ -151,6 +151,19 @@
 .bag-overlay-btn.added svg path { stroke: #fff; }
 </style>
 
+
+<style id="sz-grid-style">
+/* --- SneakerZone auto grid/image styles (lightweight, no look change) --- */
+.section-brand { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+.section-brand h2 { font-weight: 800; font-size: 1.25rem; margin-bottom: 0.5rem; }
+.gender-wrap h3 { font-weight: 700; margin: 0.5rem 0 0.5rem; }
+.section-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+@media (min-width: 640px){ .section-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px){ .section-grid{ grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.product-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 0.5rem; }
+.product-card .img-wrap { width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 0.75rem; }
+</style>
+
 </head>
 <body class="text-black h-full bg-white">
 
@@ -164,7 +177,89 @@
             <span class="text-black">SNEAKER</span><span class="text-blue-600">ZONE</span>
           </div>
         </div>
-                
+        
+
+
+<!-- Prueba de cargado de tenis-->
+<!-- Botón para abrir el formulario -->
+<div class="text-center my-12">
+  <button id="pickDirBtn" onclick="toggleUploadForm()" class="nike-button bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition">Actualizar catálogo</button>
+</div>
+
+<!-- Formulario emergente -->
+</div>
+
+<!-- Script para insertar el producto en la sección correspondiente -->
+<script>
+function toggleUploadForm() {
+  document.getElementById('uploadForm').classList.toggle('hidden');
+}
+
+function subirTenis() {
+  const nombre = document.getElementById('nombreTenis').value;
+  const precio = document.getElementById('precioTenis').value;
+  const categoria = document.getElementById('categoria').value;
+  const marca = document.getElementById('marca').value;
+  const tallas = document.getElementById('tallasTenis').value.split(',');
+  const foto = document.getElementById('fotoTenis').files[0];
+
+  if (!nombre || !precio || !tallas || !foto) {
+    alert('Por favor completa todos los campos y selecciona una imagen.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const imageUrl = e.target.result;
+
+    const card = document.createElement('div');
+    card.className = `product-card nike-hover group cursor-pointer`;
+    card.setAttribute('data-brand', marca.toLowerCase());
+
+    card.innerHTML = `
+      <div class="relative overflow-hidden bg-gray-100 rounded-lg mb-4">
+        <div class="product-image aspect-square flex items-center justify-center p-4">
+          <img src="${imageUrl}" alt="${nombre}" class="w-full h-full object-cover rounded-lg">
+        </div>
+      </div>
+      <div class="space-y-2">
+        <h3 class="font-medium text-black">${nombre}</h3>
+        <p class="text-gray-500 text-sm">${marca} - Tenis para ${categoria.charAt(0).toUpperCase() + categoria.slice(1)}</p>
+        <p class="font-medium text-black">$${precio}</p>
+        <div class="size-selector mt-4">
+          <p class="text-sm text-gray-600 mb-2">Talla:</p>
+          <div class="grid grid-cols-4 gap-2 mb-4">
+            ${tallas.map(t => `<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="${t.trim()}">${t.trim()}</button>`).join('')}
+          </div>
+        </div>
+        <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 hover:bg-green-700" disabled>
+          Comprar por WhatsApp
+        </button>
+      </div>
+    `;
+
+    const idMap = {
+      hombre: 'men-catalog',
+      mujer: 'women-catalog',
+      ninos: 'ninos-page'
+    };
+
+    const contenedor = document.querySelector(`#${idMap[categoria]} .grid`);
+    if (contenedor) {
+      contenedor.appendChild(card);
+      alert(`Tenis "${nombre}" cargado correctamente en la categoría ${categoria} (${marca}) con precio $${precio} y tallas: ${tallas.join(', ')}`);
+    } else {
+      alert('No se encontró la sección correspondiente. Verifica que exista el contenedor con id "' + idMap[categoria] + '".');
+    }
+
+    toggleUploadForm();
+  };
+
+  reader.readAsDataURL(foto);
+}
+</script>
+    <!-- Prueba de cargado de tenis-->
+        
         <!-- Navigation -->
         <nav class="hidden md:flex space-x-8">
           <a href="#" onclick="showPage('nuevos-lanzamientos')" class="text-black hover:text-gray-600 font-medium text-sm tracking-wide transition-colors">Nuevos Lanzamientos</a>
@@ -215,12 +310,8 @@
       </div>
     </div>
 
-<div class="text-center my-12">
-  <button id="pickDirBtn" class="nike-button bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition">
-    Actualizar catálogo
-  </button>
-  <span class="ml-3 text-xs text-gray-500">Selecciona tu carpeta de Inventario</span>
-</div>        
+</header>
+        
 
   <!-- Hero Section -->
   <section class="relative bg-gray-50 overflow-hidden">
@@ -1104,7 +1195,7 @@
       </div>
       
       <div class="border-t border-gray-200 mt-12 pt-8 text-center">
-        <p class="text-gray-500 font-light">&copy; 2025 SneakerZone. Todos los derechos reservados.</p>
+        <p class="text-gray-500 font-light">&copy; 202 SneakerZone. Todos los derechos reservados.</p>
       </div>
     </div>
   </footer>
@@ -3045,11 +3136,12 @@ if (h2 && h2.nextSibling) {
 </script>
 
 
-<div id="catalogRoot" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"></div>
-
 <script>
 (function(){
-  // --- Toast helper ---
+  // Solo se conecta al botón existente "Actualizar catálogo".
+  const VALID_EXT = ['jpg','jpeg','png','webp','gif'];
+  const NAME_RE = /^(?<brand>[A-Za-z]+)_(?<genero>Hombre|Mujer|Unisex)_(?<modelo>[^_]+)_(?<color>[^_]+)_(?<precio>\d+(?:\.\d+)?)_(?<tallas>(?:\d+(?:\.\d+)?)(?:-\d+(?:\.\d+)?)*)\.(?<ext>jpg|jpeg|png|webp|gif)$/i;
+
   function toast(msg){
     let t = document.getElementById('snzToast');
     if(!t){
@@ -3060,11 +3152,8 @@ if (h2 && h2.nextSibling) {
     }
     t.textContent = msg;
     t.style.opacity = '1';
-    setTimeout(()=>{ t.style.opacity = '0'; }, 2400);
+    setTimeout(()=>{ t.style.opacity = '0'; }, 2500);
   }
-
-  const VALID_EXT = ['jpg','jpeg','png','webp','gif'];
-  const NAME_RE = /^(?<brand>[A-Za-z]+)_(?<genero>Hombre|Mujer|Unisex)_(?<modelo>[^_]+)_(?<color>[^_]+)_(?<precio>\d+(?:\.\d+)?)_(?<tallas>(?:\d+(?:\.\d+)?)(?:-\d+(?:\.\d+)?)*)\.(?<ext>jpg|jpeg|png|webp|gif)$/i;
 
   async function* walkDir(dirHandle){
     for await (const entry of dirHandle.values()){
@@ -3072,93 +3161,183 @@ if (h2 && h2.nextSibling) {
       else if (entry.kind === 'directory') yield* walkDir(entry);
     }
   }
-  async function fileToObjectURL(h){ const f = await h.getFile(); return URL.createObjectURL(f); }
 
-  // --- Catalog containers ---
-  function ensureCatalogRoot(){
-    let root = document.getElementById('catalogRoot');
-    if (root) return root;
-    const actionsBar = document.getElementById('actionsBar');
-    root = document.createElement('div');
-    root.id = 'catalogRoot';
-    root.className = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8';
-    (actionsBar || document.body).insertAdjacentElement('afterend', root);
+  async function fileToObjectURL(fileHandle){
+    const f = await fileHandle.getFile();
+    return URL.createObjectURL(f);
+  }
+
+  function parseName(name){
+    const m = name.match(NAME_RE);
+    if(!m) return null;
+    const {brand, genero, modelo, color, precio, tallas} = m.groups;
+    return { brand, genero, modelo, color, precio: parseFloat(precio), tallas: tallas.split('-') };
+  }
+
+  
+function ensureCatalogRoot(){
+  // 1) Usa #catalogRoot si existe
+  let root = document.getElementById('catalogRoot');
+  if (root) return root;
+
+  // 2) Intenta detectar una grilla existente (sin cambiar diseño)
+  root = document.querySelector('[data-grid]') || document.querySelector('.section-grid');
+  if (root) return root;
+
+  // 3) Si no hay contenedor, créalo inmediatamente debajo del botón/acciones
+  const actionsBar = document.getElementById('actionsBar') || document.getElementById('pickDirBtn')?.parentElement;
+  const newRoot = document.createElement('div');
+  newRoot.id = 'catalogRoot';
+  newRoot.className = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4';
+  if (actionsBar && actionsBar.parentNode){
+    actionsBar.insertAdjacentElement('afterend', newRoot);
+  } else if (document.querySelector('main')) {
+    document.querySelector('main').appendChild(newRoot);
+  } else {
+    document.body.appendChild(newRoot);
+  }
+  return newRoot;
+}
     return root;
   }
 
-  const __gridCache = new Map();
-  function getTemplateGridClasses(){
-    const tpl = document.querySelector('.section-grid, .grid');
-    return tpl ? tpl.className : 'grid grid-cols-1 sm:grid-cols-3 gap-6';
-  }
-
-  function ensureBrandSectionUsingTemplate(brand, genero){
-    const key = brand.toLowerCase()+'|'+genero;
-    if (__gridCache.has(key)) return __gridCache.get(key);
-    const root = ensureCatalogRoot();
-
-    // Busca sección existente por encabezado exacto (h2/h3 con nombre de la marca)
-    let section = Array.from(root.querySelectorAll('section.section-brand')).find(s => s.getAttribute('data-brand') === brand.toLowerCase());
-    if (!section){
-      section = document.createElement('section');
-      section.className = 'section-brand';
-      section.setAttribute('data-brand', brand.toLowerCase());
-      const h2 = document.createElement('h2');
-      h2.className = 'font-extrabold text-xl mb-3';
-      h2.textContent = brand;
-      section.appendChild(h2);
-      root.appendChild(section);
-    }
-    let wrap = section.querySelector(`.gender-wrap[data-gender="${genero}"]`);
-    if (!wrap){
-      wrap = document.createElement('div');
-      wrap.className = 'gender-wrap mb-4';
-      wrap.setAttribute('data-gender', genero);
-      const h3 = document.createElement('h3');
-      h3.className = 'font-bold mb-2';
-      h3.textContent = (genero==='Hombre'?'Hombre':genero==='Mujer'?'Mujer':'Unisex');
-      const grid = document.createElement('div');
-      grid.className = getTemplateGridClasses();
-      grid.setAttribute('data-grid', genero);
-      wrap.appendChild(h3);
-      wrap.appendChild(grid);
-      section.appendChild(wrap);
-    }
-    const grid = wrap.querySelector('.section-grid, .grid');
-    __gridCache.set(key, grid);
-    return grid;
-  }
-
-  // --- Card template EXACT requested ---
   function makeCard({imgURL, brand, genero, modelo, color, precio, tallas}){
-    const generoTexto = genero === 'Hombre' ? 'Tenis para Hombre'
-                      : genero === 'Mujer' ? 'Tenis para Mujer'
-                      : 'Tenis Unisex';
-    const tallaButtons = tallas.map(t => 
-      `<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="${t}">${t}</button>`
-    ).join('');
     const card = document.createElement('div');
-    card.className = 'product-card nike-hover group cursor-pointer';
-    card.setAttribute('data-brand', brand.toLowerCase());
+    card.className = 'product-card bg-white rounded-2xl p-3 shadow-sm';
     card.innerHTML = `
-      <div class="relative overflow-hidden bg-gray-50 rounded-lg mb-4">
-        <div class="product-image aspect-square flex items-center justify-center p-4">
-          <img src="${imgURL}" alt="${modelo}" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
-        </div>
-      </div>
-      <div class="space-y-2">
-        <h3 class="font-medium text-black">${modelo}</h3>
-        <p class="text-gray-500 text-sm">${brand} - ${generoTexto}</p>
-        <p class="font-medium text-black">$${Number(precio).toFixed(0)}</p>
-        <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-          <p class="text-sm text-gray-600 mb-2">Talla:</p>
-          <div class="grid grid-cols-4 gap-2 mb-4">
-            ${tallaButtons}
-          </div>
-        </div>
-        <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
-          Comprar por WhatsApp
+      <div class="relative">
+        <img src="${imgURL}" alt="${modelo}">
+        <button type="button" class="bag-overlay-btn" title="Agregar al carrito">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+          </svg>
         </button>
+      </div>
+      <div class="mt-2">
+        <h3 class="text-base font-bold text-black">${modelo}</h3>
+        <p class="product-meta">${brand} • ${genero} • <span class="capitalize">${color}</span></p>
+        <p class="font-medium text-black mt-1">$${Number(precio).toFixed(2)}</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+          ${tallas.map(t => `<button type="button" class="size-btn" data-size="${t}">${t}</button>`).join('')}
+        </div>
+        <button type="button" class="whatsapp-btn">Comprar por WhatsApp</button>
+      </div>
+    `;
+    return card;
+  }
+
+  async function loadFromFolder(dirHandle){
+    const root = ensureCatalogRoot();
+    if (!root){ toast('No encontré contenedor de catálogo.'); return; }
+    let added=0, skipped=0;
+
+    for await (const fh of walkDir(dirHandle)){
+      const name = fh.name;
+      const ext = name.split('.').pop().toLowerCase();
+      if (!VALID_EXT.includes(ext)) { skipped++; continue; }
+      const meta = parseName(name);
+      if (!meta){ skipped++; continue; }
+      const imgURL = await fileToObjectURL(fh);
+      const card = makeCard({imgURL, ...meta});
+      // Insertamos al inicio del contenedor detectado (no creamos nuevas secciones para no alterar tu diseño)
+      root.prepend(card);
+      added++;
+    }
+    if (typeof updateButtonState === 'function') {
+      document.querySelectorAll('.product-card').forEach(updateButtonState);
+    }
+    toast(`Listo: ${added} cargados, ${skipped} ignorados.`);
+  }
+
+  document.addEventListener('click', async function(e){
+    const btn = e.target.closest('#pickDirBtn');
+    if (!btn) return;
+    try{
+      const dir = await window.showDirectoryPicker({ id: 'sneakerzone-inventario' });
+      await loadFromFolder(dir);
+    }catch(err){
+      if (err && err.name !== 'AbortError') {
+        console.error(err);
+        toast('No se pudo leer la carpeta.');
+      }
+    }
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  // --- Utilidades ---
+  function toast(msg){
+    let t = document.getElementById('snzToast');
+    if(!t){
+      t = document.createElement('div');
+      t.id = 'snzToast';
+      t.style.cssText = 'position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 14px;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.22);z-index:9999';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity = '1';
+    setTimeout(()=>{ t.style.opacity = '0'; }, 2600);
+  }
+
+  async function* walkDir(dirHandle){
+    for await (const entry of dirHandle.values()){
+      if (entry.kind === 'file') yield entry;
+      else if (entry.kind === 'directory') yield* walkDir(entry);
+    }
+  }
+
+  async function fileToObjectURL(fileHandle){
+    const f = await fileHandle.getFile();
+    return URL.createObjectURL(f);
+  }
+
+  const NAME_RE = /^(?<brand>[A-Za-z]+)_(?<genero>Hombre|Mujer|Unisex)_(?<modelo>[^_]+)_(?<color>[^_]+)_(?<precio>\d+(?:\.\d+)?)_(?<tallas>(?:\d+(?:\.\d+)?)(?:-\d+(?:\.\d+)?)*)\.(?<ext>jpg|jpeg|png|webp|gif)$/i;
+  const VALID_EXT = ['jpg','jpeg','png','webp','gif'];
+
+  function ensureCatalogRoot(){
+    let root = document.getElementById('catalogRoot');
+    if (root) return root;
+    root = document.querySelector('[data-grid]') || document.querySelector('.section-grid');
+    if (root) return root;
+    const actionsBar = document.getElementById('actionsBar') || document.getElementById('pickDirBtn')?.parentElement;
+    const newRoot = document.createElement('div');
+    newRoot.id = 'catalogRoot';
+    newRoot.className = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4';
+    if (actionsBar && actionsBar.parentNode){
+      actionsBar.insertAdjacentElement('afterend', newRoot);
+    } else if (document.querySelector('main')) {
+      document.querySelector('main').appendChild(newRoot);
+    } else {
+      document.body.appendChild(newRoot);
+    }
+    return newRoot;
+  }
+
+  function makeCard({imgURL, brand, genero, modelo, color, precio, tallas}){
+    const card = document.createElement('div');
+    card.className = 'product-card bg-white rounded-2xl p-3 shadow-sm';
+    card.innerHTML = `
+      <div class="relative">
+        <img src="${imgURL}" alt="${modelo}">
+        <button type="button" class="bag-overlay-btn" title="Agregar al carrito">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="mt-2">
+        <h3 class="text-base font-bold text-black">${modelo}</h3>
+        <p class="product-meta">${brand} • ${genero} • <span class="capitalize">${color}</span></p>
+        <p class="font-medium text-black mt-1">$${Number(precio).toFixed(2)}</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+          ${tallas.map(t => `<button type="button" class="size-btn" data-size="${t}">${t}</button>`).join('')}
+        </div>
+        <button type="button" class="whatsapp-btn">Comprar por WhatsApp</button>
       </div>
     `;
     return card;
@@ -3172,7 +3351,10 @@ if (h2 && h2.nextSibling) {
   }
 
   async function loadFromFolder(dirHandle){
+    const root = ensureCatalogRoot();
+    if (!root){ toast('No encontré contenedor de catálogo.'); return; }
     let added=0, skipped=0;
+
     for await (const fh of walkDir(dirHandle)){
       const name = fh.name;
       const ext = name.split('.').pop().toLowerCase();
@@ -3180,10 +3362,8 @@ if (h2 && h2.nextSibling) {
       const meta = parseName(name);
       if (!meta){ skipped++; continue; }
       const imgURL = await fileToObjectURL(fh);
-
-      const grid = ensureBrandSectionUsingTemplate(meta.brand, meta.genero);
       const card = makeCard({imgURL, ...meta});
-      grid.appendChild(card);
+      root.prepend(card);
       added++;
     }
     if (typeof updateButtonState === 'function') {
@@ -3197,20 +3377,21 @@ if (h2 && h2.nextSibling) {
     if (!btn) return;
     btn.addEventListener('click', async (e)=>{
       e.preventDefault();
+      // Soporte / validación del API
       if (!('showDirectoryPicker' in window)){
-        toast('Tu navegador no permite seleccionar carpetas. Usa Chrome/Edge o Live Server.');
+        toast('Tu navegador no permite seleccionar carpetas. Usa Chrome/Edge o abre con Live Server.');
+        console.warn('showDirectoryPicker no disponible. Requiere contexto seguro (https o localhost).');
         return;
       }
       try{
         const dir = await window.showDirectoryPicker({ id: 'sneakerzone-inventario' });
         await loadFromFolder(dir);
       }catch(err){
-        if (err && err.name !== 'AbortError'){
-          console.error(err);
-          toast('No se pudo leer la carpeta.');
-        }
+        if (err && err.name === 'AbortError') return;
+        console.error(err);
+        toast('No se pudo leer la carpeta.');
       }
-    }, { once:true });
+    }, { once: true }); // evitar múltiples bindings
   }
 
   document.addEventListener('DOMContentLoaded', wireButton);

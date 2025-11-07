@@ -118,39 +118,6 @@
   .fav-card img{width:64px;height:64px;object-fit:cover;border-radius:8px}
 </style>
 
-
-<style>
-/* Bag overlay on product cards */
-.product-card {
-  position: relative;
-}
-.bag-overlay-btn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 9999px;
-  background: rgba(255,255,255,0.95);
-  border: 1px solid rgba(0,0,0,0.1);
-  cursor: pointer;
-  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-  z-index: 10;
-}
-.bag-overlay-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 18px rgba(0,0,0,0.12);
-}
-.bag-overlay-btn svg { width: 22px; height: 22px; }
-.bag-overlay-btn.added {
-  background: #111; color: #fff;
-}
-.bag-overlay-btn.added svg path { stroke: #fff; }
-</style>
-
 </head>
 <body class="text-black h-full bg-white">
 
@@ -164,7 +131,181 @@
             <span class="text-black">SNEAKER</span><span class="text-blue-600">ZONE</span>
           </div>
         </div>
-                
+        
+
+
+<!-- Botón para abrir el formulario -->
+<div class="text-center my-12">
+  </button>
+</div>
+
+<!-- Formulario emergente -->
+<div id="uploadForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+  <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+    <h2 class="text-xl font-bold mb-4 text-center">Agregar Nuevo Tenis</h2>
+
+    <label class="block mb-2 text-sm font-medium">Nombre del producto:</label>
+    <input type="text" id="nombreTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. Air Max Revolution">
+
+    <label class="block mb-2 text-sm font-medium">Precio:</label>
+    <input type="number" id="precioTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 750">
+
+    <label class="block mb-2 text-sm font-medium">Categoría:</label>
+    <select id="categoria" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
+      <option value="hombre">Hombre</option>
+      <option value="mujer">Mujer</option>
+      <option value="ninos">Niños</option>
+    </select>
+
+    <label class="block mb-2 text-sm font-medium">Marca:</label>
+    <select id="marca" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
+      <option value="nike">Nike</option>
+      <option value="adidas">Adidas</option>
+      <option value="puma">Puma</option>
+      <option value="reebok">Reebok</option>
+      <option value="newbalance">New Balance</option>
+      <option value="alo">Alo</option>
+      <option value="gucicloudtec">GuciCloudtec</option>
+    </select>
+
+    <label class="block mb-2 text-sm font-medium">Tallas disponibles (separadas por coma):</label>
+    <input type="text" id="tallasTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 7,8,9,10,11">
+
+    <label class="block mb-2 text-sm font-medium">Foto del producto:</label>
+    <input type="file" id="fotoTenis" accept="image/*" class="w-full mb-4">
+
+    <button onclick="subirTenis()" class="nike-button bg-green-600 text-white w-full py-2 hover:bg-green-700 transition">
+      Subir Tenis
+    </button>
+    <button onclick="toggleUploadForm()" class="mt-3 text-sm text-gray-500 hover:underline block text-center">
+      Cancelar
+    </button>
+  </div>
+</div>
+
+    <!-- Prueba de cargado de tenis-->
+<!-- Botón para abrir el formulario -->
+<div class="text-center my-12">
+  <button onclick="toggleUploadForm()" class="nike-button bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition">
+    Cargar Tenis
+  </button>
+</div>
+
+<!-- Formulario emergente -->
+<div id="uploadForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+  <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
+    <h2 class="text-xl font-bold mb-4 text-center">Agregar Nuevo Tenis</h2>
+
+    <label class="block mb-2 text-sm font-medium">Nombre del producto:</label>
+    <input type="text" id="nombreTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. Air Max Revolution">
+
+    <label class="block mb-2 text-sm font-medium">Precio:</label>
+    <input type="number" id="precioTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 750">
+
+    <label class="block mb-2 text-sm font-medium">Categoría:</label>
+    <select id="categoria" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
+      <option value="hombre">Hombre</option>
+      <option value="mujer">Mujer</option>
+      <option value="ninos">Niños</option>
+    </select>
+
+    <label class="block mb-2 text-sm font-medium">Marca:</label>
+    <select id="marca" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
+      <option value="nike">Nike</option>
+      <option value="adidas">Adidas</option>
+      <option value="puma">Puma</option>
+      <option value="reebok">Reebok</option>
+      <option value="newbalance">New Balance</option>
+      <option value="alo">Alo</option>
+      <option value="gucicloudtec">GuciCloudtec</option>
+    </select>
+
+    <label class="block mb-2 text-sm font-medium">Tallas disponibles (separadas por coma):</label>
+    <input type="text" id="tallasTenis" class="w-full border border-gray-300 rounded px-3 py-2 mb-4" placeholder="Ej. 7,8,9,10,11">
+
+    <label class="block mb-2 text-sm font-medium">Foto del producto:</label>
+    <input type="file" id="fotoTenis" accept="image/*" class="w-full mb-4">
+
+    <button onclick="subirTenis()" class="nike-button bg-green-600 text-white w-full py-2 hover:bg-green-700 transition">
+      Subir Tenis
+    </button>
+    <button onclick="toggleUploadForm()" class="mt-3 text-sm text-gray-500 hover:underline block text-center">
+      Cancelar
+    </button>
+  </div>
+</div>
+
+<!-- Script para insertar el producto en la sección correspondiente -->
+<script>
+function toggleUploadForm() {
+  document.getElementById('uploadForm').classList.toggle('hidden');
+}
+
+function subirTenis() {
+  const nombre = document.getElementById('nombreTenis').value;
+  const precio = document.getElementById('precioTenis').value;
+  const categoria = document.getElementById('categoria').value;
+  const marca = document.getElementById('marca').value;
+  const tallas = document.getElementById('tallasTenis').value.split(',');
+  const foto = document.getElementById('fotoTenis').files[0];
+
+  if (!nombre || !precio || !tallas || !foto) {
+    alert('Por favor completa todos los campos y selecciona una imagen.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const imageUrl = e.target.result;
+
+    const card = document.createElement('div');
+    card.className = `product-card nike-hover group cursor-pointer`;
+    card.setAttribute('data-brand', marca.toLowerCase());
+
+    card.innerHTML = `
+      <div class="relative overflow-hidden bg-gray-100 rounded-lg mb-4">
+        <div class="product-image aspect-square flex items-center justify-center p-4">
+          <img src="${imageUrl}" alt="${nombre}" class="w-full h-full object-cover rounded-lg">
+        </div>
+      </div>
+      <div class="space-y-2">
+        <h3 class="font-medium text-black">${nombre}</h3>
+        <p class="text-gray-500 text-sm">${marca} - Tenis para ${categoria.charAt(0).toUpperCase() + categoria.slice(1)}</p>
+        <p class="font-medium text-black">$${precio}</p>
+        <div class="size-selector mt-4">
+          <p class="text-sm text-gray-600 mb-2">Talla:</p>
+          <div class="grid grid-cols-4 gap-2 mb-4">
+            ${tallas.map(t => `<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="${t.trim()}">${t.trim()}</button>`).join('')}
+          </div>
+        </div>
+        <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 hover:bg-green-700" disabled>
+          Comprar por WhatsApp
+        </button>
+      </div>
+    `;
+
+    const idMap = {
+      hombre: 'men-catalog',
+      mujer: 'women-catalog',
+      ninos: 'ninos-page'
+    };
+
+    const contenedor = document.querySelector(`#${idMap[categoria]} .grid`);
+    if (contenedor) {
+      contenedor.appendChild(card);
+      alert(`Tenis "${nombre}" cargado correctamente en la categoría ${categoria} (${marca}) con precio $${precio} y tallas: ${tallas.join(', ')}`);
+    } else {
+      alert('No se encontró la sección correspondiente. Verifica que exista el contenedor con id "' + idMap[categoria] + '".');
+    }
+
+    toggleUploadForm();
+  };
+
+  reader.readAsDataURL(foto);
+}
+</script>
+    <!-- Prueba de cargado de tenis-->
+        
         <!-- Navigation -->
         <nav class="hidden md:flex space-x-8">
           <a href="#" onclick="showPage('nuevos-lanzamientos')" class="text-black hover:text-gray-600 font-medium text-sm tracking-wide transition-colors">Nuevos Lanzamientos</a>
@@ -204,7 +345,11 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </button>
-          
+          <button class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </button>
           <button class="p-2 hover:bg-gray-100 rounded-full transition-colors relative">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
@@ -214,13 +359,7 @@
         </div>
       </div>
     </div>
-
-<div class="text-center my-12">
-  <button id="pickDirBtn" class="nike-button bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition">
-    Actualizar catálogo
-  </button>
-  <span class="ml-3 text-xs text-gray-500">Selecciona tu carpeta de Inventario</span>
-</div>        
+  </header>
 
   <!-- Hero Section -->
   <section class="relative bg-gray-50 overflow-hidden">
@@ -260,7 +399,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://i.imgur.com/FiYwjBf.jpeg" alt="Air Max Revolution" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Air Max Revolution</h3>
@@ -292,7 +437,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://i.imgur.com/3xPCiP0.jpeg" alt="Urban Runner Pro" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Urban Runner Pro</h3>
@@ -324,7 +475,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://i.imgur.com/cDBsI1q.jpeg" alt="Classic Sport Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Classic Sport Elite</h3>
@@ -356,7 +513,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=400&fit=crop&crop=center" alt="Classic Leather Pro" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Classic Leather Pro</h3>
@@ -415,7 +578,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=400&h=400&fit=crop&crop=center" alt="Jordan Retro Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Jordan Retro Elite</h3>
@@ -446,7 +615,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&h=400&fit=crop&crop=center" alt="Air Force Thunder" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Air Force Thunder</h3>
@@ -477,7 +652,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=400&h=400&fit=crop&crop=center" alt="Max Performance Pro" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Max Performance Pro</h3>
@@ -508,7 +689,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&crop=center" alt="Fresh Foam Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Fresh Foam Elite</h3>
@@ -539,7 +726,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=400&fit=crop&crop=center" alt="Classic Leather Pro" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Classic Leather Pro</h3>
@@ -570,7 +763,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&crop=center" alt="Cloud Runner Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Cloud Runner Elite</h3>
@@ -839,7 +1038,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=400&fit=crop&crop=center" alt="Air Bella Elegance" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Air Bella Elegance</h3>
@@ -870,7 +1075,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=center" alt="Flex Style Comfort" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Flex Style Comfort</h3>
@@ -901,7 +1112,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1584735175315-9d5df23860e6?w=400&h=400&fit=crop&crop=center" alt="Urban Chic Premium" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Urban Chic Premium</h3>
@@ -932,7 +1149,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&crop=center" alt="Fresh Foam Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Fresh Foam Elite</h3>
@@ -963,7 +1186,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=400&fit=crop&crop=center" alt="Classic Leather Pro" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Classic Leather Pro</h3>
@@ -994,7 +1223,13 @@
             <div class="product-image aspect-square flex items-center justify-center p-4">
               <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&crop=center" alt="Cloud Runner Elite" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
             </div>
-            
+            <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="p-2 bg-white rounded-full shadow-lg hover:bg-gray-50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="space-y-2">
             <h3 class="font-medium text-black">Cloud Runner Elite</h3>
@@ -1104,7 +1339,7 @@
       </div>
       
       <div class="border-t border-gray-200 mt-12 pt-8 text-center">
-        <p class="text-gray-500 font-light">&copy; 2025 SneakerZone. Todos los derechos reservados.</p>
+        <p class="text-gray-500 font-light">&copy; 202 SneakerZone. Todos los derechos reservados.</p>
       </div>
     </div>
   </footer>
@@ -2913,309 +3148,5 @@ if (h2 && h2.nextSibling) {
   }, {capture:true});
 })();
 </script>
-
-<script>
-// === WhatsApp + tallas ===
-(function(){
-  const PHONE = "5213325503778"; // MX +1? Using 52 country code + 1?  Without the plus sign.
-  function encodeMsg(s){ return encodeURIComponent(s); }
-
-  function getCardInfo(card){
-    const name = (card.querySelector('h3')?.textContent || '').trim();
-    const price = (card.querySelector('p.font-medium.text-black')?.textContent || '').trim();
-    const brandLine = (card.querySelector('.text-gray-500')?.textContent || '').trim();
-    // selected size
-    const selected = card.querySelector('.size-btn.active')?.getAttribute('data-size') || '';
-    return {name, price, brandLine, selected};
-  }
-
-  function updateButtonState(card){
-    const btn = card.querySelector('.whatsapp-btn');
-    if(!btn) return;
-    const hasSize = !!card.querySelector('.size-btn.active');
-    btn.disabled = !hasSize;
-    btn.classList.toggle('opacity-50', !hasSize);
-  }
-
-  function onSizeClick(e){
-    const btn = e.target.closest('.size-btn');
-    if(!btn) return;
-    const card = e.target.closest('.product-card');
-    if(!card) return;
-    // toggle active on this group
-    card.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active', 'border-black'));
-    btn.classList.add('active', 'border-black');
-    updateButtonState(card);
-  }
-
-  function onWhatsAppClick(e){
-    const btn = e.target.closest('.whatsapp-btn');
-    if(!btn) return;
-    const card = e.target.closest('.product-card');
-    if(!card) return;
-    const {name, price, brandLine, selected} = getCardInfo(card);
-    if(!selected){
-      alert("Elige una talla antes de continuar.");
-      return;
-    }
-    const message =
-`¡Hola! Me interesa este producto:
-• ${name}
-• ${brandLine}
-• Precio: ${price}
-• Talla: ${selected}
-
-¿Podrías darme más información?`;
-    const url = `https://wa.me/${PHONE}?text=${encodeMsg(message)}`;
-    window.open(url, '_blank');
-  }
-
-  // Event delegation for all current/future cards
-  document.addEventListener('click', function(e){
-    if(e.target.closest('.size-btn')) onSizeClick(e);
-    if(e.target.closest('.whatsapp-btn')) onWhatsAppClick(e);
-  });
-
-  // Initialize states for existing cards on load
-  document.addEventListener('DOMContentLoaded', function(){
-    document.querySelectorAll('.product-card').forEach(updateButtonState);
-  });
-})();
-</script>
-
-
-<script>
-(function(){
-  const STORAGE_KEY = "cartCount";
-  function getCount(){ return parseInt(localStorage.getItem(STORAGE_KEY) || "0", 10); }
-  function setCount(n){ localStorage.setItem(STORAGE_KEY, String(n)); updateHeader(n); }
-  function updateHeader(n){
-    const badge = document.getElementById('cartCount');
-    if(badge){ badge.textContent = String(n); }
-  }
-  function ensureBagOnCard(card){
-    if (!card || card.querySelector('.bag-overlay-btn')) return;
-    const btn = document.createElement('button');
-    btn.type = "button";
-    btn.className = "bag-overlay-btn";
-    btn.setAttribute('title', 'Agregar al carrito');
-    btn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-</svg>`;
-    card.appendChild(btn);
-  }
-  function initAllCards(scope){
-    (scope || document).querySelectorAll('.product-card').forEach(ensureBagOnCard);
-  }
-  function onBagClick(e){
-    const btn = e.target.closest('.bag-overlay-btn');
-    if(!btn) return;
-    e.preventDefault();
-    const n = getCount() + 1;
-    setCount(n);
-    btn.classList.add('added');
-    setTimeout(()=>btn.classList.remove('added'), 600);
-  }
-  // Mutation observer for dynamically added product cards
-  const observer = new MutationObserver((mutations)=>{
-    mutations.forEach(m=>{
-      m.addedNodes && m.addedNodes.forEach(node=>{
-        if(!(node instanceof HTMLElement)) return;
-        if(node.classList && node.classList.contains('product-card')) {
-          ensureBagOnCard(node);
-        } else {
-          initAllCards(node);
-        }
-      });
-    });
-  });
-
-  document.addEventListener('DOMContentLoaded', function(){
-    // initialize header count from storage
-    updateHeader(getCount());
-    // ensure bags
-    initAllCards(document);
-    // observe body for new cards
-    observer.observe(document.body, {childList:true, subtree:true});
-    // delegate clicks
-    document.addEventListener('click', onBagClick);
-  });
-})();
-</script>
-
-
-<div id="catalogRoot" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"></div>
-
-<script>
-(function(){
-  // --- Toast helper ---
-  function toast(msg){
-    let t = document.getElementById('snzToast');
-    if(!t){
-      t = document.createElement('div');
-      t.id = 'snzToast';
-      t.style.cssText = 'position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 14px;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.22);z-index:9999';
-      document.body.appendChild(t);
-    }
-    t.textContent = msg;
-    t.style.opacity = '1';
-    setTimeout(()=>{ t.style.opacity = '0'; }, 2400);
-  }
-
-  const VALID_EXT = ['jpg','jpeg','png','webp','gif'];
-  const NAME_RE = /^(?<brand>[A-Za-z]+)_(?<genero>Hombre|Mujer|Unisex)_(?<modelo>[^_]+)_(?<color>[^_]+)_(?<precio>\d+(?:\.\d+)?)_(?<tallas>(?:\d+(?:\.\d+)?)(?:-\d+(?:\.\d+)?)*)\.(?<ext>jpg|jpeg|png|webp|gif)$/i;
-
-  async function* walkDir(dirHandle){
-    for await (const entry of dirHandle.values()){
-      if (entry.kind === 'file') yield entry;
-      else if (entry.kind === 'directory') yield* walkDir(entry);
-    }
-  }
-  async function fileToObjectURL(h){ const f = await h.getFile(); return URL.createObjectURL(f); }
-
-  // --- Catalog containers ---
-  function ensureCatalogRoot(){
-    let root = document.getElementById('catalogRoot');
-    if (root) return root;
-    const actionsBar = document.getElementById('actionsBar');
-    root = document.createElement('div');
-    root.id = 'catalogRoot';
-    root.className = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8';
-    (actionsBar || document.body).insertAdjacentElement('afterend', root);
-    return root;
-  }
-
-  const __gridCache = new Map();
-  function getTemplateGridClasses(){
-    const tpl = document.querySelector('.section-grid, .grid');
-    return tpl ? tpl.className : 'grid grid-cols-1 sm:grid-cols-3 gap-6';
-  }
-
-  function ensureBrandSectionUsingTemplate(brand, genero){
-    const key = brand.toLowerCase()+'|'+genero;
-    if (__gridCache.has(key)) return __gridCache.get(key);
-    const root = ensureCatalogRoot();
-
-    // Busca sección existente por encabezado exacto (h2/h3 con nombre de la marca)
-    let section = Array.from(root.querySelectorAll('section.section-brand')).find(s => s.getAttribute('data-brand') === brand.toLowerCase());
-    if (!section){
-      section = document.createElement('section');
-      section.className = 'section-brand';
-      section.setAttribute('data-brand', brand.toLowerCase());
-      const h2 = document.createElement('h2');
-      h2.className = 'font-extrabold text-xl mb-3';
-      h2.textContent = brand;
-      section.appendChild(h2);
-      root.appendChild(section);
-    }
-    let wrap = section.querySelector(`.gender-wrap[data-gender="${genero}"]`);
-    if (!wrap){
-      wrap = document.createElement('div');
-      wrap.className = 'gender-wrap mb-4';
-      wrap.setAttribute('data-gender', genero);
-      const h3 = document.createElement('h3');
-      h3.className = 'font-bold mb-2';
-      h3.textContent = (genero==='Hombre'?'Hombre':genero==='Mujer'?'Mujer':'Unisex');
-      const grid = document.createElement('div');
-      grid.className = getTemplateGridClasses();
-      grid.setAttribute('data-grid', genero);
-      wrap.appendChild(h3);
-      wrap.appendChild(grid);
-      section.appendChild(wrap);
-    }
-    const grid = wrap.querySelector('.section-grid, .grid');
-    __gridCache.set(key, grid);
-    return grid;
-  }
-
-  // --- Card template EXACT requested ---
-  function makeCard({imgURL, brand, genero, modelo, color, precio, tallas}){
-    const generoTexto = genero === 'Hombre' ? 'Tenis para Hombre'
-                      : genero === 'Mujer' ? 'Tenis para Mujer'
-                      : 'Tenis Unisex';
-    const tallaButtons = tallas.map(t => 
-      `<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="${t}">${t}</button>`
-    ).join('');
-    const card = document.createElement('div');
-    card.className = 'product-card nike-hover group cursor-pointer';
-    card.setAttribute('data-brand', brand.toLowerCase());
-    card.innerHTML = `
-      <div class="relative overflow-hidden bg-gray-50 rounded-lg mb-4">
-        <div class="product-image aspect-square flex items-center justify-center p-4">
-          <img src="${imgURL}" alt="${modelo}" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';">
-        </div>
-      </div>
-      <div class="space-y-2">
-        <h3 class="font-medium text-black">${modelo}</h3>
-        <p class="text-gray-500 text-sm">${brand} - ${generoTexto}</p>
-        <p class="font-medium text-black">$${Number(precio).toFixed(0)}</p>
-        <div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-          <p class="text-sm text-gray-600 mb-2">Talla:</p>
-          <div class="grid grid-cols-4 gap-2 mb-4">
-            ${tallaButtons}
-          </div>
-        </div>
-        <button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled>
-          Comprar por WhatsApp
-        </button>
-      </div>
-    `;
-    return card;
-  }
-
-  function parseName(name){
-    const m = name.match(NAME_RE);
-    if(!m) return null;
-    const {brand, genero, modelo, color, precio, tallas} = m.groups;
-    return { brand, genero, modelo, color, precio: parseFloat(precio), tallas: tallas.split('-') };
-  }
-
-  async function loadFromFolder(dirHandle){
-    let added=0, skipped=0;
-    for await (const fh of walkDir(dirHandle)){
-      const name = fh.name;
-      const ext = name.split('.').pop().toLowerCase();
-      if (!VALID_EXT.includes(ext)) { skipped++; continue; }
-      const meta = parseName(name);
-      if (!meta){ skipped++; continue; }
-      const imgURL = await fileToObjectURL(fh);
-
-      const grid = ensureBrandSectionUsingTemplate(meta.brand, meta.genero);
-      const card = makeCard({imgURL, ...meta});
-      grid.appendChild(card);
-      added++;
-    }
-    if (typeof updateButtonState === 'function') {
-      document.querySelectorAll('.product-card').forEach(updateButtonState);
-    }
-    toast(`Listo: ${added} cargados, ${skipped} ignorados.`);
-  }
-
-  function wireButton(){
-    const btn = document.getElementById('pickDirBtn');
-    if (!btn) return;
-    btn.addEventListener('click', async (e)=>{
-      e.preventDefault();
-      if (!('showDirectoryPicker' in window)){
-        toast('Tu navegador no permite seleccionar carpetas. Usa Chrome/Edge o Live Server.');
-        return;
-      }
-      try{
-        const dir = await window.showDirectoryPicker({ id: 'sneakerzone-inventario' });
-        await loadFromFolder(dir);
-      }catch(err){
-        if (err && err.name !== 'AbortError'){
-          console.error(err);
-          toast('No se pudo leer la carpeta.');
-        }
-      }
-    }, { once:true });
-  }
-
-  document.addEventListener('DOMContentLoaded', wireButton);
-})();
-</script>
-
 </body>
 </html>

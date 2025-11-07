@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mis Favoritos</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#f7fafc;color:#111827}
+    header{position:sticky;top:0;background:#ffffff;border-bottom:1px solid #e5e7eb;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;z-index:10}
+    .container{max-width:1100px;margin:24px auto;padding:0 16px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:12px;display:flex;flex-direction:column}
+    .card img{width:100%;height:180px;object-fit:cover;border-radius:12px}
+    .title{font-weight:700;margin-top:8px}
+    .meta{color:#6b7280;font-size:14px;margin-top:2px}
+    .row{display:flex;gap:8px;margin-top:10px;align-items:center}
+    select,button{border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px;background:#fff}
+    button{cursor:pointer}
+    .empty{color:#6b7280}
+    a.goto{border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px;text-decoration:none;color:#111827}
+  </style>
+</head>
+<body>
+  <header>
+    <a id="back" href="#" style="text-decoration:none;color:#111827;font-weight:700">⟵ Volver al catálogo</a>
+    <div style="font-weight:700">Mis Favoritos</div>
+    <button id="clear">Vaciar</button>
+  </header>
+  <div class="container">
+    <div id="grid" class="grid"></div>
+    <p id="empty" class="empty" style="display:none">Aún no tienes favoritos.</p>
+  </div>
+
+<script>
+(function(){
+  const STORAGE_KEY = "favorites";
+  const loadFavs  = () => JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  const saveFavs  = (arr) => localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  const grid = document.getElementById("grid");
+  const empty = document.getElementById("empty");
+  const clearBtn = document.getElementById("clear");
+  const back = document.getElementById("back");
+  const phone = "3325503778";
+  const sizes = ["22","22.5","23","23.5","24","24.5","25","25.5","26","26.5","27","27.5","28","28.5","29","29.5","30"];
+
+  function baseIndex(){
+    const u = new URL(window.location.href);
+    u.search = ""; u.hash = "";
+    const parts = u.pathname.split("/");
+    parts[parts.length-1] = "index.html";
+    u.pathname = parts.join("/");
+    return u.href;
+  }
+
+  back.addEventListener("click", function(ev){
+    ev.preventDefault();
+    window.location.href = baseIndex();
+  });
+
+  render();
+
+  clearBtn.addEventListener("click", ()=>{ saveFavs([]); render(); });
+
+  function render(){
+    const favs = loadFavs();
+    grid.innerHTML = "";
+    if (!favs.length){
+      empty.style.display = "block";
+      return;
+    }
+    empty.style.display = "none";
+
+    const idxBase = baseIndex();
+
+    favs.forEach((item, idx)=>{
+      const card = document.createElement("div");
+      card.className = "card";
+      const section = encodeURIComponent(item.sectionId || item.sectionLabel || "");
+      const hash = item.cardId ? "#" + item.cardId : "";
+      const href = section ? `${idxBase}?section=${section}${hash}` : `${idxBase}${hash}`;
+      card.innerHTML = `
+        <img src="${item.img || ""}" alt="${item.title || ""}">
+        <div class="title">${item.title || "Producto"}</div>
+        <div class="meta">${(item.brand ? item.brand.toUpperCase() : "")}${(item.price?" · "+item.price:"")}</div>
+        <div class="row">
+          <a class="goto" href="${href}">Ver en la página</a>
+          <button data-id="${item.id}" class="remove">Quitar</button>
+          <button data-idx="${idx}" class="whatsapp">WhatsApp</button>
+        </div>
+        <div class="row">
+          <label for="size-${idx}" style="font-size:14px">Talla</label>
+          <select id="size-${idx}">${sizes.map(t=>`<option value="${t}">${t}</option>`).join("")}</select>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    grid.querySelectorAll(".remove").forEach(btn=>{
+      btn.addEventListener("click", function(){
+        const id = this.getAttribute("data-id");
+        const next = loadFavs().filter(f=>f.id!==id);
+        saveFavs(next);
+        render();
+      });
+    });
+
+    grid.querySelectorAll(".whatsapp").forEach(btn=>{
+      btn.addEventListener("click", function(){
+        const idx = +this.getAttribute("data-idx");
+        const favs = loadFavs();
+        const it = favs[idx];
+        const sizeSel = document.getElementById("size-"+idx);
+        const size = sizeSel ? sizeSel.value : "";
+        const msg = `¡Hola! Me interesa este producto:%0A• ${encodeURIComponent(it.title)}%0A• Precio: ${encodeURIComponent(it.price||"")}%0A• Talla: ${encodeURIComponent(size)}%0A• Link: ${encodeURIComponent(location.href)}`;
+        const url = `https://wa.me/${phone}?text=${msg}`;
+        window.open(url, "_blank");
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
