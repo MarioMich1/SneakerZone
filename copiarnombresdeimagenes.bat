@@ -2,7 +2,7 @@
 setlocal EnableExtensions EnableDelayedExpansion
 
 :: === RUTA DE TU INVENTARIO ===
-set "BASEDIR=C:\Users\Mario\OneDrive\Escritorio\SneakerZone\Inventario_Marcas"
+set "BASEDIR=C:\Users\Mario\OneDrive\Escritorio\SneakerZone\assets\Img"
 
 :: === SALIDA ÚNICA (junto al .bat) ===
 set "OUTDIR=%~dp0"

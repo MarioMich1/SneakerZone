@@ -1,0 +1,41 @@
+{
+  "Vans": [
+    "OldSkool",
+    "Sk8-Hi",
+    "Authentic",
+    "Era",
+    "Slip-On"
+  ],
+  "Nike": [
+    "AirMax",
+    "AirForce",
+    "Dunk",
+    "Cortez",
+    "Jordan",
+    "Blazer",
+    "Pegasus"
+  ],
+  "Adidas": [
+    "StanSmith",
+    "Superstar",
+    "Gazelle",
+    "Forum",
+    "Ultraboost",
+    "Samba"
+  ],
+  "NewBalance": [
+    "9060",
+    "990",
+    "550",
+    "2002R",
+    "574"
+  ],
+  "Alo": [
+    "Sandalias"
+  ],
+  "Skechers": [
+    "DLux",
+    "GoWalk",
+    "ArchFit"
+  ]
+}
