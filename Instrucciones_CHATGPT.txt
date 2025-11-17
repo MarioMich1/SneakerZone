@@ -1,0 +1,35 @@
+Voy a enviarte algunas imágenes de tenis. A partir de cada imagen, necesito que me generes un nombre siguiendo este patrón: Marca_Género_Modelo_Color_Precio_Tallas. Por ejemplo: Adidas_Mujer_9060_550_21.5-22-24. En las fotos se puede ver el modelo, el color, el precio y las tallas disponibles. Quiero que analices cada imagen, extraigas esa información y me devuelvas el nombre sugerido para cada una. Además, si las imágenes originales tienen nombres genéricos como img1.jpg o foto2.png, quiero que me generes un archivo .bat que renombre automáticamente cada imagen con el nuevo nombre que tú propongas. Por ejemplo, si una imagen se llama img1.jpg y tú la describes como Alo_Mujer_Sandalias_Fucsia_300_23.jpg, el archivo .bat debería contener una línea como: rename "img1.jpg" "Alo_Mujer_Sandalias_Fucsia_300_23.jpg". Y así sucesivamente para todas las imágenes. El objetivo es que todas las fotos queden correctamente nombradas según su contenido, y que el archivo .bat me permita hacer el cambio de nombres de forma automática. Nota: El precio de estas imagenes es 450
+
+
+
+Necesito agregar mas tenis, solo necesitas seguir el mismo patron con las que están hechas las demás, por ejemplo:
+
+</div><div class="product-card nike-hover group cursor-pointer" data-brand="skechers" data-gender="mujer">
+<div class="relative overflow-hidden bg-gray-50 rounded-lg mb-4">
+<div class="product-image aspect-square flex items-center justify-center p-4">
+<img alt="Zapatos Negros Con Blanco" class="w-full h-full object-cover rounded-lg" onerror="this.src=''; this.alt='Imagen no disponible'; this.style.display='none';" src="assets/Img/Skechers/Skechers_Mujer_zapatos_NegrosconBlanco_450_23.5-24-24.5-26.5.jpg"/>
+</div>
+</div>
+<div class="space-y-2">
+<h3 class="font-medium text-black">Zapatos Negros Con Blanco</h3>
+<p class="text-gray-500 text-sm">Skechers - Tenis para Mujer</p>
+<p class="font-medium text-black">$450</p>
+<!-- Size selector -->
+<div class="size-selector mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<p class="text-sm text-gray-600 mb-2">Talla:</p>
+<div class="grid grid-cols-4 gap-2 mb-4">
+<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="23.5">23.5</button>
+<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="24">24</button>
+<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="24.5">24.5</button>
+<button class="size-btn border border-gray-300 hover:border-black py-2 text-sm rounded transition-colors" data-size="26.5">26.5</button>
+</div>
+</div>
+<button class="whatsapp-btn w-full nike-button bg-green-600 text-white py-3 mt-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-green-700" disabled="">
+              Comprar por WhatsApp
+            </button>
+
+Lo unico que tienes que hacer es que dependiendo del nombre tu sabras todos los detalles Marca_Genero_Modelo_Color_Precio_Tallas, por ejemplo este nombre de una imagen "NewBalance_Mujer_9060_BlancoconGris_550_23.5-25.5.jpg", asi que tu me agregaras las demás líneas con estos nuevos tenis en mi index.
+
+Estos son los nombres, ten en cuenta que las imágenes ya están listas, y por eso te estoy entregando los nombres solamente.
+
+Nota:Hay unas imágenes que en el genero dice Nino, pero se refiere a Niños, si el nombre de una imagen ya coincide con otro ya no lo pongas para que no se repita.
